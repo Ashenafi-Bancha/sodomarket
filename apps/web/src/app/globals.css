@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/*
+ * Wolaita Marketplace design tokens.
+ * Brand: deep Wolaita forest green with a warm coffee-gold accent on warm neutrals.
+ */
+@theme {
+  --font-sans: var(--font-jakarta), var(--font-ethiopic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: var(--font-jakarta), var(--font-ethiopic), ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #eefbf3;
+  --color-brand-100: #d6f4e1;
+  --color-brand-200: #b0e7c7;
+  --color-brand-300: #7cd3a6;
+  --color-brand-400: #45b77f;
+  --color-brand-500: #229a63;
+  --color-brand-600: #157c4f;
+  --color-brand-700: #126341;
+  --color-brand-800: #124f36;
+  --color-brand-900: #10412e;
+  --color-brand-950: #062419;
+
+  --color-gold-50: #fdf8eb;
+  --color-gold-100: #faedc7;
+  --color-gold-200: #f4d98b;
+  --color-gold-300: #eec151;
+  --color-gold-400: #e9aa2b;
+  --color-gold-500: #d98b16;
+  --color-gold-600: #bf6a10;
+  --color-gold-700: #9e4c12;
+  --color-gold-800: #813c16;
+  --color-gold-900: #6a3215;
+
+  --color-ink-50: #f7f7f5;
+  --color-ink-100: #efeeea;
+  --color-ink-200: #e2e0da;
+  --color-ink-300: #cbc8bf;
+  --color-ink-400: #a19d92;
+  --color-ink-500: #78756b;
+  --color-ink-600: #5c5a52;
+  --color-ink-700: #45443e;
+  --color-ink-800: #2c2b27;
+  --color-ink-900: #1b1a17;
+  --color-ink-950: #0f0f0d;
+
+  --color-canvas: #fbfaf7;
+
+  --shadow-soft: 0 1px 2px rgb(27 26 23 / 0.04), 0 2px 8px -2px rgb(27 26 23 / 0.06);
+  --shadow-card: 0 1px 2px rgb(27 26 23 / 0.05), 0 8px 24px -8px rgb(27 26 23 / 0.10);
+  --shadow-lift: 0 2px 4px rgb(27 26 23 / 0.04), 0 18px 40px -12px rgb(27 26 23 / 0.22);
+  --shadow-glow: 0 10px 30px -10px rgb(21 124 79 / 0.45);
+
+  --radius-4xl: 2rem;
+
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-fade-up: fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-scale-in: scale-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-up: slide-up 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shimmer {
+    from { background-position: -400px 0; }
+    to { background-position: 400px 0; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+  }
+  ::selection {
+    background: var(--color-brand-200);
+    color: var(--color-brand-950);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-page { padding-inline: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .container-page { padding-inline: 2rem; }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-ink-100) 0%, var(--color-ink-50) 50%, var(--color-ink-100) 100%);
+    background-size: 800px 100%;
+    animation: var(--animate-shimmer);
+  }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+
+  .hero-pattern {
+    background-image:
+      radial-gradient(circle at 20% 20%, rgb(69 183 127 / 0.25), transparent 45%),
+      radial-gradient(circle at 85% 10%, rgb(233 170 43 / 0.18), transparent 40%),
+      radial-gradient(circle at 70% 90%, rgb(34 154 99 / 0.22), transparent 45%);
+  }
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

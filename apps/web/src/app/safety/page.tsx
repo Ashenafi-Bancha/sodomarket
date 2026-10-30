@@ -1,63 +1,68 @@
-'use client';
+import type { Metadata } from 'next';
+import { Banknote, BadgeCheck, Car, FileCheck2, Flag, MapPin, ShieldAlert, Users } from 'lucide-react';
+import { getT } from '@/lib/i18n-server';
+import { ContentPage, InfoCard } from '@/components/ui/ContentPage';
+import { platformConfig } from '@/lib/config';
 
-import React from 'react';
-import Link from 'next/link';
-import { useTranslation } from '@/lib/i18n-context';
-import { ShieldCheck, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+export const metadata: Metadata = {
+  title: 'Trust & Safety',
+  description: 'How to buy, rent and sell safely in Wolaita Sodo.',
+};
 
-export default function SafetyPage() {
-  const { t } = useTranslation();
-
+export default async function SafetyPage() {
+  const { t } = await getT();
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
-      <div className="text-center space-y-3">
-        <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
-          Consumer Protection & Community Trust
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          Trust & Safety Guidelines
-        </h1>
-        <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-          Best practices for secure real estate and vehicle transactions in Wolaita Sodo, Ethiopia.
-        </p>
+    <ContentPage eyebrow={t.nav.safety} title="Buy, rent and sell with confidence" intro={t.footer.safetyText}>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <InfoCard icon={<FileCheck2 className="h-6 w-6" />} title="Check the title deed">
+          Ask to see the original title deed (karta) or lease certificate and verify it at the Wolaita Sodo municipal land office before paying.
+        </InfoCard>
+        <InfoCard icon={<Car className="h-6 w-6" />} title="Check the vehicle libre">
+          Confirm the libre (ownership booklet) matches the seller’s ID, the chassis and the plate number at the transport office.
+        </InfoCard>
+        <InfoCard icon={<Banknote className="h-6 w-6" />} title="Never pay before you see it">
+          Do not send deposits by mobile money or bank transfer for property or vehicles you have not seen in person.
+        </InfoCard>
+        <InfoCard icon={<MapPin className="h-6 w-6" />} title="Meet safely">
+          Meet in daylight, at the property or a public place, and bring a friend or family member.
+        </InfoCard>
+        <InfoCard icon={<BadgeCheck className="h-6 w-6" />} title="Look for the verified badge">
+          Verified sellers and brokers have had their identity or license checked by our team.
+        </InfoCard>
+        <InfoCard icon={<Users className="h-6 w-6" />} title="Use a licensed broker">
+          Licensed brokers are accountable and know local procedures. Standard commission is around {platformConfig.commissionGuidelines.realEstateStandardPercent}%.
+        </InfoCard>
       </div>
 
-      <div className="bg-amber-50 rounded-3xl border border-amber-200/80 p-8 space-y-4 text-xs sm:text-sm text-amber-950">
-        <div className="flex items-center gap-2 font-bold text-amber-900 text-base">
-          <AlertTriangle className="w-5 h-5 text-amber-700 shrink-0" />
-          <span>Golden Rule: Never Transfer Money Before Physical Verification</span>
-        </div>
-        <p className="leading-relaxed">
-          Wolaita Marketplace is a digital advertising and discovery directory. We do not operate escrow accounts or hold down payments. Always inspect the house, land, or car in person in Wolaita Sodo alongside authorized municipal officials or licensed local brokers.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-xs">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-            <FileText className="w-5 h-5" />
-          </div>
-          <h3 className="text-base font-bold text-slate-900">Real Estate Verification</h3>
-          <ul className="space-y-2 text-xs text-slate-600">
-            <li>• Check original title deed (sened) at Wolaita Sodo Municipal Land Registry.</li>
-            <li>• Confirm boundary landmarks in Kebele records before finalizing contracts.</li>
-            <li>• Verify tax receipts and water/electric utility bills are cleared.</li>
+      <div className="mt-10 grid gap-4 lg:grid-cols-2">
+        <div className="rounded-3xl bg-red-50 p-6 ring-1 ring-red-100">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-red-900">
+            <ShieldAlert className="h-5 w-5" /> Warning signs
+          </h2>
+          <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[15px] text-red-900/80">
+            <li>The price is far below similar listings.</li>
+            <li>The seller is “abroad” and asks for payment first.</li>
+            <li>Pressure to decide today or to pay a “reservation fee”.</li>
+            <li>Documents that cannot be checked at an official office.</li>
           </ul>
         </div>
-
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-xs">
-          <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-800 flex items-center justify-center font-bold">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <h3 className="text-base font-bold text-slate-900">Vehicle Verification</h3>
-          <ul className="space-y-2 text-xs text-slate-600">
-            <li>• Verify the vehicle registration card (Libre) matches the chassis number.</li>
-            <li>• Inspect engine condition, gearbox, and body frame with a trusted mechanic in Sodo.</li>
-            <li>• Perform ownership transfer only at official transport licensing bureaus.</li>
-          </ul>
+        <div className="rounded-3xl bg-white p-6 ring-1 ring-ink-100">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-ink-900">
+            <Flag className="h-5 w-5 text-brand-600" /> Report a problem
+          </h2>
+          <p className="mt-3 text-[15px] leading-relaxed text-ink-600">
+            Use “{t.listingDetail.reportListing}” on any listing, or contact us at{' '}
+            <a href={`mailto:${platformConfig.supportEmail}`} className="font-semibold text-brand-700 hover:underline">
+              {platformConfig.supportEmail}
+            </a>{' '}
+            or{' '}
+            <a href={`tel:${platformConfig.supportPhone}`} className="font-semibold text-brand-700 hover:underline">
+              {platformConfig.supportPhone}
+            </a>
+            . Our team reviews every report.
+          </p>
         </div>
       </div>
-    </div>
+    </ContentPage>
   );
 }

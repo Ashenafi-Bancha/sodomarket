@@ -15,6 +15,7 @@ export const amExtra = {
     featured: 'ተመራጭ',
     newBadge: 'አዲስ',
     views: 'እይታዎች',
+    listing: 'ማስታወቂያ',
     listings: 'ማስታወቂያዎች',
     submit: 'ላክ',
     continue: 'ቀጥል',

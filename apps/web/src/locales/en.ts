@@ -21,6 +21,7 @@ export const en = {
     featured: 'Featured',
     newBadge: 'New',
     views: 'views',
+    listing: 'listing',
     listings: 'listings',
     submit: 'Submit',
     continue: 'Continue',

@@ -98,8 +98,8 @@ const LISTINGS: ListingSeed[] = [
     ownerDeclaration: 'Listed by Sodo Prime on behalf of the owner, with a verified title certificate.',
     images: [
       { id: 'photo-1600585154340-be6161a56a0c', caption: 'Front of the house and compound' },
-      { id: 'photo-1600566753190-17f0baa2a6c3', caption: 'Living room' },
-      { id: 'photo-1600566752355-35792bedcfea', caption: 'Kitchen' },
+      { id: 'photo-1600566753190-17f0baa2a6c3', caption: 'Side view' },
+      { id: 'photo-1600566752355-35792bedcfea', caption: 'Master bathroom' },
     ],
     property: {
       propertyType: PropertyType.HOUSE,

@@ -153,7 +153,7 @@ export default async function HomePage() {
                 <span className="min-w-0">
                   <span className="block truncate text-[15px] font-bold text-ink-900">{c.label}</span>
                   <span className="text-sm text-ink-500">
-                    {count} {t.common.listings}
+                    {count} {count === 1 ? t.common.listing : t.common.listings}
                   </span>
                 </span>
               </Link>
@@ -195,7 +195,7 @@ export default async function HomePage() {
               <p className={`mt-6 text-lg font-bold ${i === 0 ? 'text-white' : 'text-ink-900'}`}>{z.name}</p>
               <p className={`mt-0.5 line-clamp-1 text-sm ${i === 0 ? 'text-brand-100/70' : 'text-ink-500'}`}>{z.description}</p>
               <p className={`mt-4 text-sm font-semibold ${i === 0 ? 'text-gold-300' : 'text-brand-700'}`}>
-                {stats.byZone[z.name] ?? 0} {t.common.listings}
+                {stats.byZone[z.name] ?? 0} {(stats.byZone[z.name] ?? 0) === 1 ? t.common.listing : t.common.listings}
               </p>
               <ArrowUpRight
                 className={`absolute right-5 top-5 h-5 w-5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${

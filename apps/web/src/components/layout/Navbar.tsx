@@ -28,8 +28,13 @@ export function Navbar() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [lastPath, setLastPath] = useState(pathname);
 
-  useEffect(() => setDrawerOpen(false), [pathname]);
+  // Close the mobile menu after navigating.
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setDrawerOpen(false);
+  }
 
   const links = [
     { href: '/properties', label: t.nav.properties },
@@ -147,8 +152,13 @@ function UserMenu() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const [lastPath, setLastPath] = useState(pathname);
 
-  useEffect(() => setOpen(false), [pathname]);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
+
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);

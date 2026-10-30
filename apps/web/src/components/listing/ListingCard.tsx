@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Bath, BedDouble, Calendar, Camera, Fuel, Gauge, MapPin, Maximize2, Settings2, ShieldCheck, Sparkles } from 'lucide-react';
 import type { ListingItem } from '@/lib/types';
@@ -35,7 +35,8 @@ export function ListingCard({
   const p = listing.propertyDetails;
   const v = listing.vehicleDetails;
   const cover = listing.media.find((m) => m.isPrimary)?.url ?? listing.media[0]?.url;
-  const isNew = listing.publishedAt && Date.now() - new Date(listing.publishedAt).getTime() < 3 * 86_400_000;
+  const [now] = useState(() => Date.now());
+  const isNew = !!listing.publishedAt && now - new Date(listing.publishedAt).getTime() < 3 * 86_400_000;
 
   const specs: { icon: React.ElementType; label: string }[] = [];
   if (p) {

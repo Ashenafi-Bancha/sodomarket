@@ -13,7 +13,7 @@
     "build:web": "npm run build --workspace=apps/web",
     "build:api": "npm run build --workspace=apps/api",
     "start": "npm run start --workspace=apps/web",
-    "db:local": "prisma dev --name sodo --detach",
+    "db:local": "prisma dev --name sodo",
     "db:migrate": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
     "db:generate": "prisma generate",

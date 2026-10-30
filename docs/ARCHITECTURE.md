@@ -1,39 +1,69 @@
-# System Architecture: Wolaita Marketplace
+# Architecture: Wolaita Marketplace
 
-## 1. High-Level Architecture Overview
+## Overview
 
-The system is organized as a modular monorepo:
+One Next.js 16 app (`apps/web`) serves both the website and the REST API, backed by PostgreSQL through Prisma.
 
 ```
 SodoMarketHub/
-├── apps/
-│   ├── web/                    # Next.js 16 (App Router, React 19, Tailwind CSS, Turbopack)
-│   │   ├── src/
-│   │   │   ├── app/            # Public Marketplace, CRM Workspace, Admin Center, REST API v1
-│   │   │   ├── components/     # UI Design System, Listings, Wizard, Dashboard, Admin
-│   │   │   ├── lib/            # Types, Config, Formatters, Store, Auth & I18n Contexts
-│   │   │   └── locales/        # Wolaytta (wal), Amharic (am), English (en) dictionaries
-│   │
-│   └── api/                    # NestJS Modular Monolith API
-│       └── src/
-│           ├── modules/        # Listings, Leads, Appointments, Admin
-│           └── main.ts         # Swagger OpenAPI docs at /api/docs
-│
-├── prisma/                     # Database Schema, Migrations, Seed Fixtures
-│   ├── schema.prisma           # PostgreSQL Normalized Data Model
-│   └── seed.ts                 # Realistic Wolaita Sodo Fixtures
-│
-└── docs/                       # Architecture, Database, API, Deployment, Testing
+├── apps/web/src/
+│   ├── app/                 Pages (App Router) and the REST API under app/api/v1
+│   ├── components/          UI kit (ui/), layout, listing, sell wizard, workspace, admin, auth
+│   ├── lib/
+│   │   ├── server/          Server-only code: db client, session, data queries, validation
+│   │   ├── i18n-*.ts        Language: cookie on the server, context on the client
+│   │   └── types.ts         Shared types used by server and client
+│   └── locales/             en (base), am, wal — missing keys fall back to English
+├── prisma/                  schema.prisma, migrations/, seed.ts
+├── apps/api/                Earlier NestJS placeholder — not used
+└── docs/
 ```
 
-## 2. Frontend Design Principles
-- **Aesthetic**: Premium dark forest emerald (`#1b4332`), warm amber accents (`#d97706`), clean slate surfaces.
-- **Mobile First**: Fluid responsive layouts, large touch targets, compressed images.
-- **Client & Server Integration**: Next.js App Router with Server-Side Rendering (SSR) and Static Site Generation (SSG) for public SEO listing pages.
+## How a page is built
 
-## 3. Data Flow & Lead Routing
-1. Public visitor views a property or vehicle on `/properties/[slug]` or `/vehicles/[slug]`.
-2. Visitor submits an inquiry via `InquiryModal`.
-3. The lead is created in the database and automatically routed to the responsible broker.
-4. Broker views lead in `/dashboard`, moves stage (`Contacted` -> `Viewing Scheduled`), schedules on-site viewing.
-5. Once negotiated, broker records deal with agreed price and 2% standard advisory commission.
+- Pages are **server components**. They read the visitor's session (`lib/server/session.ts`) and language cookie, then query the database directly through `lib/server/listings.ts` and `lib/server/workspace.ts`.
+- Interactive parts (filters, gallery, contact forms, wizard, workspace tabs) are **client components**. They change data by calling the REST API (`lib/api-client.ts`) and then `router.refresh()` so server data re-renders.
+- Browse filters live in the URL (`?zone=Arada&category=HOUSE&sort=price_asc`), so searches can be shared and the back button works.
+
+## Data model (Prisma)
+
+`User` → `UserProfile`; `Listing` → `Asset` → `Location` + `PropertyDetails` | `VehicleDetails`; `ListingMedia`;
+`Lead` (inquiries, linked to the seller and optionally the buyer's account); `Appointment` (viewings, status `REQUESTED` → `CONFIRMED` → `COMPLETED`);
+`Deal`; `Report`; `Favorite`; `Agency` / `AgencyMember`; `AuditLog`.
+
+## Listing lifecycle
+
+1. Seller submits → `PENDING_REVIEW` (a buyer account becomes a seller automatically).
+2. Admin approves → `PUBLISHED` (or `CHANGES_REQUESTED` / `REJECTED` with a note the seller sees).
+3. Editing a listing sends it back to review.
+4. Owner can switch between `PUBLISHED`, `SOLD`, `RENTED` and `UNAVAILABLE`; completing a deal marks it sold/rented.
+
+## Inquiry flow
+
+Visitor sends a message or viewing request (no account needed) → a `Lead` is created for the listing's author
+(plus a `REQUESTED` appointment for viewings) → it appears in the seller's workspace → seller moves it through stages,
+confirms the viewing, and records a deal with commission.
+
+## Security
+
+- Sessions: HMAC-signed, http-only, same-site cookies (`SESSION_SECRET`); bcrypt password hashes.
+- Every write endpoint checks ownership or the admin role on the server.
+- Input validated with Zod; Ethiopian phone numbers normalised to `+2519…` / `+2517…`.
+- Rate limits on login, sign-up, inquiries, reports and uploads (in-memory, per server).
+- Uploads: type checked from file bytes (JPG/PNG/WebP only), 6 MB limit, random file names.
+- Unpublished listings are visible only to their owner and admins.
+
+## API (all under `/api/v1`)
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST auth/register`, `auth/login`, `auth/logout`, `GET auth/me` | Accounts and sessions |
+| `PATCH account` | Profile, phone, password |
+| `GET/POST listings`, `GET/PATCH/DELETE listings/:id` | Search, create, edit, change status, delete |
+| `POST listings/:id/favorite` | Save / unsave |
+| `POST uploads`, `GET uploads/:file` | Photo upload and serving |
+| `GET/POST leads`, `PATCH leads/:id` | Inquiries |
+| `GET/POST appointments`, `PATCH appointments/:id` | Viewings |
+| `GET/POST deals`, `PATCH deals/:id` | Deals and commission |
+| `GET/POST reports`, `PATCH reports/:id` | Listing reports |
+| `POST admin/listings/:id`, `PATCH admin/users/:id` | Moderation and user management |

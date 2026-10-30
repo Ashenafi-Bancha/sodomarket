@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RotateCcw, Search } from 'lucide-react';
 import type { AssetType } from '@/lib/types';
 import { useTranslation } from '@/lib/i18n-context';
@@ -72,13 +72,17 @@ export function FilterPanel({ lockAssetType, onApplied }: { lockAssetType?: Asse
   const [minPrice, setMinPrice] = useState(get('minPrice'));
   const [maxPrice, setMaxPrice] = useState(get('maxPrice'));
 
-  // Keep text fields in sync when the URL changes (e.g. chip removed).
+  // Keep text fields in sync when the URL changes (e.g. a chip is removed).
   const urlQ = get('q');
   const urlMin = get('minPrice');
   const urlMax = get('maxPrice');
-  useEffect(() => setQ(urlQ), [urlQ]);
-  useEffect(() => setMinPrice(urlMin), [urlMin]);
-  useEffect(() => setMaxPrice(urlMax), [urlMax]);
+  const [synced, setSynced] = useState({ q: urlQ, min: urlMin, max: urlMax });
+  if (synced.q !== urlQ || synced.min !== urlMin || synced.max !== urlMax) {
+    setSynced({ q: urlQ, min: urlMin, max: urlMax });
+    setQ(urlQ);
+    setMinPrice(urlMin);
+    setMaxPrice(urlMax);
+  }
 
   const set = (key: string, value: string) => {
     update({ [key]: value });

@@ -219,7 +219,7 @@ export async function ListingDetail({ slug, expected }: { slug: string; expected
                     </span>
                     <div className="min-w-0">
                       <dt className="text-xs text-ink-500">{f.label}</dt>
-                      <dd className="truncate text-[15px] font-bold text-ink-900">{f.value}</dd>
+                      <dd className="line-clamp-2 break-words text-[15px] font-bold leading-snug text-ink-900">{f.value}</dd>
                     </div>
                   </div>
                 );

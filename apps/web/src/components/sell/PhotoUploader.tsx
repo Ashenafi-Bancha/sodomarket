@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ImagePlus, Link2, Loader2, Star, Trash2 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n-context';
 import { api, errorMessage } from '@/lib/api-client';
@@ -23,7 +23,9 @@ export function PhotoUploader({ photos, onChange }: { photos: Photo[]; onChange:
 
   // Keep the latest list available inside async upload callbacks.
   const latest = useRef(photos);
-  latest.current = photos;
+  useEffect(() => {
+    latest.current = photos;
+  }, [photos]);
 
   const upload = async (files: FileList | File[]) => {
     setError('');
@@ -37,7 +39,9 @@ export function PhotoUploader({ photos, onChange }: { photos: Photo[]; onChange:
         const form = new FormData();
         form.append('file', blob, file.name.replace(/\.\w+$/, '') + (blob.type === 'image/jpeg' ? '.jpg' : ''));
         const res = await api.post<{ url: string }>('/uploads', form);
-        onChange([...latest.current, { url: res.url }]);
+        const next = [...latest.current, { url: res.url }];
+        latest.current = next;
+        onChange(next);
       } catch (err) {
         setError(errorMessage(err));
       } finally {

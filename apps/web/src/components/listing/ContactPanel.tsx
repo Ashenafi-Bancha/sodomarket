@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { BadgeCheck, CalendarCheck, MessageCircle, Pencil, Phone, ShieldCheck, LayoutDashboard } from 'lucide-react';
 import type { ListingItem } from '@/lib/types';
 import { useTranslation } from '@/lib/i18n-context';
-import { formatDate, formatPhone, formatPrice, isRental, whatsappLink } from '@/lib/formatters';
+import { formatDate, formatPhone, formatPrice, formatPriceCompact, isRental, whatsappLink } from '@/lib/formatters';
 import { sellerTypeLabel } from '@/lib/labels';
 import { fmt } from '@/locales';
 import { Badge } from '@/components/ui/Badge';
@@ -129,7 +129,7 @@ export function ContactPanel({ listing, isOwner }: { listing: ListingItem; isOwn
         <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-2 border-t border-ink-100 bg-white/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
           <div className="mr-auto min-w-0">
             <p className="truncate text-base font-extrabold text-ink-900">
-              {formatPrice(listing.price, listing.currency)}
+              {formatPriceCompact(listing.price, listing.currency)}
               {rental && <span className="text-xs font-medium text-ink-500"> {t.common.perMonth}</span>}
             </p>
             <p className="truncate text-xs text-ink-500">{seller.fullName}</p>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { CalendarCheck, CheckCircle2, Lock } from 'lucide-react';
 import type { ListingItem } from '@/lib/types';
 import { useTranslation } from '@/lib/i18n-context';
@@ -34,25 +34,18 @@ export function ContactModal({
 }) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  // The modal is mounted fresh each time it opens, so initial values are enough.
+  const [name, setName] = useState(user?.fullName ?? '');
+  const [phone, setPhone] = useState(user?.phone ? user.phone.replace(/^\+251/, '0') : '');
+  const [email, setEmail] = useState(user?.email ?? '');
   const [budget, setBudget] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(() =>
+    fmt(mode === 'VIEWING' ? t.contact.viewingMessage : t.contact.defaultMessage, { title: listing.title })
+  );
   const [when, setWhen] = useState(defaultSlot);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    setDone(false);
-    setError('');
-    setName(user?.fullName ?? '');
-    setPhone(user?.phone ? user.phone.replace(/^\+251/, '0') : '');
-    setEmail(user?.email ?? '');
-    setMessage(fmt(mode === 'VIEWING' ? t.contact.viewingMessage : t.contact.defaultMessage, { title: listing.title }));
-  }, [isOpen, mode, user, listing.title, t]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

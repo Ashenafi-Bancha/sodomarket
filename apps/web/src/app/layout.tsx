@@ -22,6 +22,9 @@ const ethiopic = Noto_Sans_Ethiopic({
   display: 'swap',
 });
 
+// Every page depends on the visitor's session and language, so render on request.
+export const dynamic = 'force-dynamic';
+
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {

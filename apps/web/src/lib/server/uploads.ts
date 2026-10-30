@@ -3,7 +3,7 @@ import path from 'node:path';
 
 /** Folder where uploaded photos are stored. Defaults to <repo>/uploads. */
 export function uploadDir() {
-  return path.resolve(process.cwd(), process.env.UPLOAD_DIR || '../../uploads');
+  return path.resolve(/*turbopackIgnore: true*/ process.cwd(), process.env.UPLOAD_DIR || '../../uploads');
 }
 
 export const UPLOAD_NAME_PATTERN = /^[a-f0-9-]{36}\.(jpg|png|webp)$/;

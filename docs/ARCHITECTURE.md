@@ -50,7 +50,7 @@ confirms the viewing, and records a deal with commission.
 - Every write endpoint checks ownership or the admin role on the server.
 - Input validated with Zod; Ethiopian phone numbers normalised to `+2519…` / `+2517…`.
 - Rate limits on login, sign-up, inquiries, reports and uploads (in-memory, per server).
-- Uploads: type checked from file bytes (JPG/PNG/WebP only), 6 MB limit, random file names.
+- Uploads: type checked from file bytes (JPG/PNG/WebP only), 6 MB limit, random file names. Stored in Vercel Blob when `BLOB_READ_WRITE_TOKEN` is set, otherwise on disk in `UPLOAD_DIR`.
 - Unpublished listings are visible only to their owner and admins.
 
 ## API (all under `/api/v1`)

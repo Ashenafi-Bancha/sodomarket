@@ -86,11 +86,21 @@ All use the password `DemoPass123!` (and appear as one-click buttons on the sign
 1. Use a managed PostgreSQL and set `DATABASE_URL`.
 2. Set a long random `SESSION_SECRET` and `NEXT_PUBLIC_APP_URL` (your real domain).
 3. Set `NEXT_PUBLIC_DEMO_MODE=false`, and don't run the seed (or change the demo passwords).
-4. Point `UPLOAD_DIR` at a persistent disk (or swap `apps/web/src/lib/server/uploads.ts` for S3/R2 storage).
+4. Photos: set `BLOB_READ_WRITE_TOKEN` to store them in Vercel Blob, or point `UPLOAD_DIR` at a persistent disk.
 5. `npm run db:migrate`, then `npm run build` and `npm start`.
+
+### Deploy on Vercel
+
+`vercel.json` deploys one service, `web` (`apps/web`), which serves the whole site including the `/api/v1` API.
+
+1. Import the repo in Vercel (keep the project's root directory as the repo root — `vercel.json` points at `apps/web`).
+2. Create a managed Postgres (for example Neon or Prisma Postgres from the Vercel Marketplace) and a **Blob** store under Storage. These set `DATABASE_URL` and `BLOB_READ_WRITE_TOKEN`.
+3. Add environment variables: `SESSION_SECRET` (long random string), `NEXT_PUBLIC_APP_URL` (your domain), `NEXT_PUBLIC_DEMO_MODE=false`, and the branding variables from `.env.example`.
+4. Create the tables once from your computer, with `DATABASE_URL` in `.env` pointing at the production database: `npm run db:migrate`.
+5. Deploy. Use `vercel dev` to run it locally the same way Vercel does.
 
 ## Notes
 
-- `apps/api` (NestJS) is an earlier placeholder and is **not used** — the Next.js app serves the API.
+- `apps/api` (NestJS) is an earlier placeholder and is **not used** or deployed — the Next.js app serves the API.
 - Wolaytta translations for newer screens are partial and fall back to English; they should be reviewed by a native speaker (`apps/web/src/locales/wal-extra.ts`).
 - The demo catalogue uses stock photos; replace them with real listings before launch.

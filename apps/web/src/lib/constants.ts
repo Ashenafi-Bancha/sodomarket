@@ -23,16 +23,31 @@ export const ZONES: { name: string; description: string }[] = [
 
 export const ZONE_NAMES = ZONES.map((z) => z.name);
 
-export const PROPERTY_TYPES: PropertyType[] = [
-  'HOUSE',
-  'APARTMENT',
-  'RESIDENTIAL_LAND',
-  'COMMERCIAL_LAND',
-  'SHOP',
-  'OFFICE',
-  'WAREHOUSE',
-  'OTHER',
+/** Property groups, like Jiji's "Houses & Apartments / Land & Plots / Commercial Property". */
+export type PropertyGroup = 'RESIDENTIAL' | 'LAND' | 'COMMERCIAL';
+
+export const PROPERTY_GROUPS: { key: PropertyGroup; types: PropertyType[] }[] = [
+  { key: 'RESIDENTIAL', types: ['HOUSE', 'APARTMENT', 'CONDOMINIUM', 'ROOM', 'STUDENT_HOSTEL'] },
+  { key: 'LAND', types: ['RESIDENTIAL_LAND', 'COMMERCIAL_LAND', 'FARM_LAND'] },
+  {
+    key: 'COMMERCIAL',
+    types: ['SHOP', 'OFFICE', 'BUILDING', 'WAREHOUSE', 'HOTEL', 'RESTAURANT', 'EVENT_HALL', 'OTHER'],
+  },
 ];
+
+export const PROPERTY_GROUP_KEYS = PROPERTY_GROUPS.map((g) => g.key);
+
+export const PROPERTY_TYPES: PropertyType[] = PROPERTY_GROUPS.flatMap((g) => g.types);
+
+/** Plots with no building: no rooms, furnishing or parking. */
+export const LAND_TYPES: PropertyType[] = ['RESIDENTIAL_LAND', 'COMMERCIAL_LAND', 'FARM_LAND'];
+
+/** Types where bedrooms/bathrooms don't apply. */
+export const NO_ROOM_TYPES: PropertyType[] = [...LAND_TYPES, 'WAREHOUSE', 'EVENT_HALL'];
+
+export function propertyGroupOf(type: PropertyType): PropertyGroup {
+  return PROPERTY_GROUPS.find((g) => g.types.includes(type))?.key ?? 'COMMERCIAL';
+}
 
 export const VEHICLE_TYPES: VehicleType[] = ['CAR', 'MOTORCYCLE', 'TRUCK', 'COMMERCIAL'];
 export const TRANSMISSIONS: TransmissionType[] = ['AUTOMATIC', 'MANUAL'];

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { RotateCcw, Search } from 'lucide-react';
 import type { AssetType } from '@/lib/types';
 import { useTranslation } from '@/lib/i18n-context';
-import { FUEL_TYPES, PROPERTY_TYPES, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
+import { FUEL_TYPES, PROPERTY_GROUPS, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
 import { Select } from '@/components/ui/Input';
 import { useFilterParams } from './useFilterParams';
 import { cn } from '@/lib/cn';
@@ -95,12 +95,8 @@ export function FilterPanel({ lockAssetType, onApplied }: { lockAssetType?: Asse
     onApplied?.();
   };
 
-  const categories =
-    assetType === 'VEHICLE'
-      ? VEHICLE_TYPES.map((c) => ({ value: c, label: t.vehicleType[c] }))
-      : assetType === 'REAL_ESTATE'
-        ? PROPERTY_TYPES.map((c) => ({ value: c, label: t.propertyType[c] }))
-        : [];
+  const vehicleCategories =
+    assetType === 'VEHICLE' ? VEHICLE_TYPES.map((c) => ({ value: c, label: t.vehicleType[c] })) : [];
 
   const thisYear = new Date().getFullYear();
 
@@ -134,16 +130,41 @@ export function FilterPanel({ lockAssetType, onApplied }: { lockAssetType?: Asse
         </Section>
       )}
 
-      {categories.length > 0 && (
+      {vehicleCategories.length > 0 && (
         <Section title={t.filters.category}>
           <div className="flex flex-wrap gap-2">
             <Chip active={!get('category')} onClick={() => set('category', '')}>
               {t.common.all}
             </Chip>
-            {categories.map((c) => (
+            {vehicleCategories.map((c) => (
               <Chip key={c.value} active={get('category') === c.value} onClick={() => set('category', c.value)}>
                 {c.label}
               </Chip>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {assetType === 'REAL_ESTATE' && (
+        <Section title={t.filters.category}>
+          <Chip active={!get('category')} onClick={() => set('category', '')}>
+            {t.common.all}
+          </Chip>
+          <div className="mt-3 space-y-3.5">
+            {PROPERTY_GROUPS.map((g) => (
+              <div key={g.key}>
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-400">{t.propertyGroup[g.key]}</p>
+                <div className="flex flex-wrap gap-2">
+                  <Chip active={get('category') === g.key} onClick={() => set('category', g.key)}>
+                    {t.propertyGroupAll[g.key]}
+                  </Chip>
+                  {g.types.map((c) => (
+                    <Chip key={c} active={get('category') === c} onClick={() => set('category', c)}>
+                      {t.propertyType[c]}
+                    </Chip>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </Section>

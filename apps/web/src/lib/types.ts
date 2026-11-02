@@ -5,11 +5,19 @@ export type AssetType = 'REAL_ESTATE' | 'VEHICLE';
 export type PropertyType =
   | 'HOUSE'
   | 'APARTMENT'
+  | 'CONDOMINIUM'
+  | 'ROOM'
+  | 'STUDENT_HOSTEL'
   | 'RESIDENTIAL_LAND'
   | 'COMMERCIAL_LAND'
+  | 'FARM_LAND'
   | 'SHOP'
   | 'OFFICE'
+  | 'BUILDING'
   | 'WAREHOUSE'
+  | 'HOTEL'
+  | 'RESTAURANT'
+  | 'EVENT_HALL'
   | 'OTHER';
 
 export type TransactionType = 'FOR_SALE' | 'FOR_RENT';

@@ -40,7 +40,10 @@ export const walExtra = {
     SHOP: 'Suuqe',
     OFFICE: 'Ooso Keetta',
     WAREHOUSE: 'Miishsha Keetta',
+    FARM_LAND: 'Goshshaa Biittaa',
   },
+  // Other new category names fall back to English until a native speaker reviews them.
+  propertyGroup: { RESIDENTIAL: 'Deʼo Keettata', LAND: 'Biittaa' },
   browse: {
     propertiesTitle: 'Wolaytta Soddon Keettaanne Saʼaa',
     vehiclesTitle: 'Wolaytta Soddon Kaamiyata',

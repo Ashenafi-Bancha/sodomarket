@@ -8,6 +8,7 @@ and the whole site works in **Wolaytta, Amharic and English**.
 
 | For | Features |
 | --- | --- |
+| Categories | **Homes:** house / villa, apartment, condominium, room / service house, student housing · **Land:** residential, commercial, farm land · **Commercial:** shop, office, whole building (G+), warehouse / workshop, hotel / guest house, café / restaurant, event / wedding hall · **Vehicles:** cars, motorcycles, trucks, commercial |
 | Buyers & tenants | Search with filters (zone, price, bedrooms, year, fuel…), sort, save favourites, call / WhatsApp / message sellers, book viewings — no account needed to contact a seller |
 | Owners, brokers & dealers | 5-step listing wizard with photo upload (photos are shrunk in the browser to save data), draft saved on the device, edit & resubmit, mark as sold / rented / hidden |
 | Workspace | Inquiry pipeline with stages and private notes, viewing calendar (confirm / complete / cancel buyer requests), deals & commission tracking, saved listings, sent messages, profile & password |

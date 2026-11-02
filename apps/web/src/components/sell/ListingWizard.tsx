@@ -21,7 +21,9 @@ import {
   CONDITIONS,
   FUEL_TYPES,
   FURNISHING,
-  PROPERTY_TYPES,
+  LAND_TYPES,
+  NO_ROOM_TYPES,
+  PROPERTY_GROUPS,
   TRANSMISSIONS,
   VEHICLE_MAKES,
   VEHICLE_TYPES,
@@ -109,8 +111,6 @@ function readDraft(): string | null {
   }
 }
 const noopSubscribe = () => () => {};
-const LAND_TYPES: PropertyType[] = ['RESIDENTIAL_LAND', 'COMMERCIAL_LAND'];
-const NO_ROOMS: PropertyType[] = ['RESIDENTIAL_LAND', 'COMMERCIAL_LAND', 'WAREHOUSE'];
 
 function fromListing(l: ListingItem): FormState {
   const p = l.propertyDetails;
@@ -252,7 +252,7 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
   };
   const isProperty = form.assetType === 'REAL_ESTATE';
   const isRent = isProperty && form.transactionType === 'FOR_RENT';
-  const hasRooms = isProperty && !NO_ROOMS.includes(form.propertyType);
+  const hasRooms = isProperty && !NO_ROOM_TYPES.includes(form.propertyType);
   const isLand = isProperty && LAND_TYPES.includes(form.propertyType);
 
   const steps = [t.wizard.stepType, t.wizard.stepDetails, t.wizard.stepPriceLocation, t.wizard.stepPhotos, t.wizard.stepReview];
@@ -471,19 +471,30 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
             </div>
             <div>
               <Label>{t.wizard.category}</Label>
-              <div className="flex flex-wrap gap-2">
-                {isProperty
-                  ? PROPERTY_TYPES.map((c) => (
-                      <Pill key={c} active={form.propertyType === c} onClick={() => set('propertyType', c)}>
-                        {t.propertyType[c]}
-                      </Pill>
-                    ))
-                  : VEHICLE_TYPES.map((c) => (
-                      <Pill key={c} active={form.vehicleType === c} onClick={() => set('vehicleType', c)}>
-                        {t.vehicleType[c]}
-                      </Pill>
-                    ))}
-              </div>
+              {isProperty ? (
+                <div className="space-y-4">
+                  {PROPERTY_GROUPS.map((g) => (
+                    <div key={g.key}>
+                      <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-400">{t.propertyGroup[g.key]}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {g.types.map((c) => (
+                          <Pill key={c} active={form.propertyType === c} onClick={() => set('propertyType', c)}>
+                            {t.propertyType[c]}
+                          </Pill>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {VEHICLE_TYPES.map((c) => (
+                    <Pill key={c} active={form.vehicleType === c} onClick={() => set('vehicleType', c)}>
+                      {t.vehicleType[c]}
+                    </Pill>
+                  ))}
+                </div>
+              )}
             </div>
             {isProperty && (
               <div>

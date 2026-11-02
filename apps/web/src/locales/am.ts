@@ -54,7 +54,7 @@ export const am = {
     apartment: 'አፓርትመንቶች',
     residentialLand: 'የመኖሪያ መሬት',
     commercialLand: 'የንግድ መሬት',
-    shop: 'ሱቆች እና ንግድ ቤቶች',
+    shop: 'ሱቆች',
     office: 'ቢሮዎች',
     warehouse: 'መጋዘኖች',
     car: 'አውቶሞቢል መኪኖች',

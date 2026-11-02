@@ -23,7 +23,11 @@ export function BrowseToolbar({ total, lockAssetType }: { total: number; lockAss
   if (assetType && !lockAssetType) chips.push({ key: 'assetType', label: assetType === 'VEHICLE' ? t.home.tabVehicles : t.home.tabProperties });
   const category = get('category');
   if (category) {
-    const label = (t.propertyType as Record<string, string>)[category] ?? (t.vehicleType as Record<string, string>)[category] ?? category;
+    const label =
+      (t.propertyGroupAll as Record<string, string>)[category] ??
+      (t.propertyType as Record<string, string>)[category] ??
+      (t.vehicleType as Record<string, string>)[category] ??
+      category;
     chips.push({ key: 'category', label });
   }
   const tx = get('transactionType');

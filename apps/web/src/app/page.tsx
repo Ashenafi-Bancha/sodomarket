@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import {
+  BedDouble,
+  Building,
+  GraduationCap,
+  Hotel,
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
@@ -20,7 +24,7 @@ import {
 import { getT } from '@/lib/i18n-server';
 import { getCurrentUser } from '@/lib/server/session';
 import { getFavoriteIds, getFeaturedListings, getMarketStats, getRecentListings } from '@/lib/server/listings';
-import { ZONES } from '@/lib/constants';
+import { PROPERTY_GROUPS, ZONES } from '@/lib/constants';
 import { formatNumber } from '@/lib/formatters';
 import { HeroSearch } from '@/components/home/HeroSearch';
 import { ListingGrid } from '@/components/listing/ListingCard';
@@ -39,16 +43,25 @@ export default async function HomePage() {
     .slice(0, 3)
     .map((l) => ({ url: l.media[0]?.url?.replace(/w=\d+/, 'w=900'), title: l.title, zone: l.location.zone }));
 
+  // `types` lists what a tile counts; a group tile (Land) counts all its types.
+  const landTypes = PROPERTY_GROUPS.find((g) => g.key === 'LAND')?.types ?? [];
   const categories = [
     { key: 'HOUSE', label: t.categories.house, icon: House, href: '/properties?category=HOUSE' },
     { key: 'APARTMENT', label: t.categories.apartment, icon: Building2, href: '/properties?category=APARTMENT' },
-    { key: 'RESIDENTIAL_LAND', label: t.categories.residentialLand, icon: LandPlot, href: '/properties?category=RESIDENTIAL_LAND' },
+    { key: 'CONDOMINIUM', label: t.categories.condominium, icon: Building, href: '/properties?category=CONDOMINIUM' },
+    { key: 'ROOM', label: t.categories.rooms, icon: BedDouble, href: '/properties?category=ROOM&transactionType=FOR_RENT' },
+    { key: 'STUDENT_HOSTEL', label: t.categories.studentHousing, icon: GraduationCap, href: '/properties?category=STUDENT_HOSTEL' },
+    { key: 'LAND', types: landTypes, label: t.categories.land, icon: LandPlot, href: '/properties?category=LAND' },
     { key: 'SHOP', label: t.categories.shop, icon: Store, href: '/properties?category=SHOP' },
     { key: 'OFFICE', label: t.categories.office, icon: Briefcase, href: '/properties?category=OFFICE' },
+    { key: 'HOTEL', label: t.categories.hotel, icon: Hotel, href: '/properties?category=HOTEL' },
     { key: 'CAR', label: t.categories.car, icon: Car, href: '/vehicles?category=CAR' },
     { key: 'TRUCK', label: t.categories.truck, icon: Truck, href: '/vehicles?category=TRUCK' },
     { key: 'MOTORCYCLE', label: t.categories.motorcycle, icon: Bike, href: '/vehicles?category=MOTORCYCLE' },
-  ];
+  ].map((c) => ({
+    ...c,
+    count: ('types' in c && c.types ? c.types : [c.key]).reduce((sum, k) => sum + (stats.byCategory[k] ?? 0), 0),
+  }));
 
   const steps = [
     { icon: Search, title: t.home.howItWorksStep1Title, desc: t.home.howItWorksStep1Desc },
@@ -137,10 +150,10 @@ export default async function HomePage() {
       {/* ─── Categories ──────────────────────────────────── */}
       <section className="container-page mt-20">
         <SectionHeading title={t.home.browseByCategory} subtitle={t.home.categoriesSubtitle} />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
           {categories.map((c) => {
             const Icon = c.icon;
-            const count = stats.byCategory[c.key] ?? 0;
+            const count = c.count;
             return (
               <Link
                 key={c.key}
@@ -151,7 +164,7 @@ export default async function HomePage() {
                   <Icon className="h-6 w-6" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block truncate text-[15px] font-bold text-ink-900">{c.label}</span>
+                  <span className="line-clamp-2 block text-[15px] font-bold leading-snug text-ink-900">{c.label}</span>
                   <span className="text-sm text-ink-500">
                     {count} {count === 1 ? t.common.listing : t.common.listings}
                   </span>

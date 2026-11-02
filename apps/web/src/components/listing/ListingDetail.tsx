@@ -34,6 +34,7 @@ import { getFavoriteIds, getListingBySlug, getSimilarListings, recordView } from
 import { formatDate, formatNumber, listingPath } from '@/lib/formatters';
 import { categoryLabel, offerLabel } from '@/lib/labels';
 import { platformConfig } from '@/lib/config';
+import { LAND_TYPES } from '@/lib/constants';
 import { Badge } from '@/components/ui/Badge';
 import { ListingGallery } from './ListingGallery';
 import { ContactPanel } from './ContactPanel';
@@ -102,7 +103,7 @@ export async function ListingDetail({ slug, expected }: { slug: string; expected
   const features: { icon: React.ElementType; label: string }[] = [];
   if (p?.waterConnected) features.push({ icon: Droplets, label: t.listingDetail.water });
   if (p?.electricityConnected) features.push({ icon: Zap, label: t.listingDetail.electricity });
-  if (p?.furnishing && p.propertyType !== 'RESIDENTIAL_LAND' && p.propertyType !== 'COMMERCIAL_LAND') {
+  if (p?.furnishing && !LAND_TYPES.includes(p.propertyType)) {
     features.push({ icon: Sofa, label: t.furnishing[p.furnishing] });
   }
   if (p?.parkingSpaces) features.push({ icon: Car, label: `${t.listingDetail.parking}: ${p.parkingSpaces}` });

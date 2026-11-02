@@ -2,7 +2,15 @@ import 'server-only';
 import type { Prisma } from '@prisma/client';
 import { prisma } from './db';
 import { listingInclude, mapListing, mapUser, userInclude } from './mappers';
-import { FUEL_TYPES, PROPERTY_TYPES, TRANSMISSIONS, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
+import {
+  FUEL_TYPES,
+  PROPERTY_GROUP_KEYS,
+  PROPERTY_GROUPS,
+  PROPERTY_TYPES,
+  TRANSMISSIONS,
+  VEHICLE_TYPES,
+  ZONE_NAMES,
+} from '@/lib/constants';
 import type {
   AssetType,
   FuelType,
@@ -34,8 +42,14 @@ const oneOf = <T extends string>(v: string | undefined, allowed: readonly T[]) =
 /** Turns URL search params into a validated search query. */
 export function parseSearchParams(raw: RawParams, lockAssetType?: AssetType): ListingSearchParams {
   const assetType = lockAssetType ?? oneOf<AssetType>(first(raw.assetType), ['REAL_ESTATE', 'VEHICLE']);
+  // A category is one type (HOUSE) or a whole property group (LAND).
+  const propertyCategories: string[] = [...PROPERTY_GROUP_KEYS, ...PROPERTY_TYPES];
   const allowedCategories: string[] =
-    assetType === 'VEHICLE' ? VEHICLE_TYPES : assetType === 'REAL_ESTATE' ? PROPERTY_TYPES : [...PROPERTY_TYPES, ...VEHICLE_TYPES];
+    assetType === 'VEHICLE'
+      ? VEHICLE_TYPES
+      : assetType === 'REAL_ESTATE'
+        ? propertyCategories
+        : [...propertyCategories, ...VEHICLE_TYPES];
   const zone = first(raw.zone);
   return {
     assetType,
@@ -63,7 +77,9 @@ function buildWhere(p: ListingSearchParams): Prisma.ListingWhereInput {
   const vehicle: Prisma.VehicleDetailsWhereInput = {};
 
   if (p.category) {
-    if ((PROPERTY_TYPES as string[]).includes(p.category)) property.propertyType = p.category as PropertyType;
+    const group = PROPERTY_GROUPS.find((g) => g.key === p.category);
+    if (group) property.propertyType = { in: group.types };
+    else if ((PROPERTY_TYPES as string[]).includes(p.category)) property.propertyType = p.category as PropertyType;
     else vehicle.vehicleType = p.category as VehicleType;
   }
   if (p.transactionType) property.transactionType = p.transactionType;

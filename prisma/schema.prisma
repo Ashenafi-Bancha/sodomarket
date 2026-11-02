@@ -23,13 +23,24 @@ enum AssetType {
 }
 
 enum PropertyType {
+  // Homes
   HOUSE
   APARTMENT
+  CONDOMINIUM
+  ROOM
+  STUDENT_HOSTEL
+  // Land
   RESIDENTIAL_LAND
   COMMERCIAL_LAND
+  FARM_LAND
+  // Commercial
   SHOP
   OFFICE
+  BUILDING
   WAREHOUSE
+  HOTEL
+  RESTAURANT
+  EVENT_HALL
   OTHER
 }
 

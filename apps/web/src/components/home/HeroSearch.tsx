@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MapPin, Search, LayoutGrid } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n-context';
-import { PROPERTY_TYPES, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
+import { PROPERTY_GROUPS, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 
 type Tab = 'all' | 'REAL_ESTATE' | 'VEHICLE';
@@ -17,11 +17,18 @@ export function HeroSearch() {
   const [zone, setZone] = useState('');
   const [category, setCategory] = useState('');
 
-  const categories =
+  // Property types are grouped like Jiji: homes, land, commercial (each with an "all" option).
+  const categories: { label?: string; options: { value: string; label: string }[] }[] =
     tab === 'VEHICLE'
-      ? VEHICLE_TYPES.map((c) => ({ value: c, label: t.vehicleType[c] }))
+      ? [{ options: VEHICLE_TYPES.map((c) => ({ value: c, label: t.vehicleType[c] })) }]
       : tab === 'REAL_ESTATE'
-        ? PROPERTY_TYPES.map((c) => ({ value: c, label: t.propertyType[c] }))
+        ? PROPERTY_GROUPS.map((g) => ({
+            label: t.propertyGroup[g.key],
+            options: [
+              { value: g.key, label: t.propertyGroupAll[g.key] },
+              ...g.types.map((c) => ({ value: c, label: t.propertyType[c] })),
+            ],
+          }))
         : [];
 
   const submit = (e: React.FormEvent) => {
@@ -101,11 +108,20 @@ export function HeroSearch() {
               <LayoutGrid className="pointer-events-none absolute left-3.5 h-[18px] w-[18px] text-brand-600" />
               <select value={category} onChange={(e) => setCategory(e.target.value)} className={selectClass}>
                 <option value="">{t.home.allCategories}</option>
-                {categories.map((c) => (
-                  <option key={c.value} value={c.value}>
-                    {c.label}
-                  </option>
-                ))}
+                {categories.map((group, i) => {
+                  const options = group.options.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ));
+                  return group.label ? (
+                    <optgroup key={group.label} label={group.label}>
+                      {options}
+                    </optgroup>
+                  ) : (
+                    <Fragment key={i}>{options}</Fragment>
+                  );
+                })}
               </select>
             </label>
           </>

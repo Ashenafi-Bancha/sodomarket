@@ -38,6 +38,8 @@ export function BrowseToolbar({ total, lockAssetType }: { total: number; lockAss
   if (tr) chips.push({ key: 'transmission', label: (t.transmission as Record<string, string>)[tr] ?? tr });
   const fuel = get('fuelType');
   if (fuel) chips.push({ key: 'fuelType', label: (t.fuel as Record<string, string>)[fuel] ?? fuel });
+  const features = get('features');
+  if (features) chips.push({ key: 'features', label: features.split(',').map((f) => t.feature[f] ?? f).join(', ') });
   if (get('minYear')) chips.push({ key: 'minYear', label: `${get('minYear')}+` });
   if (get('minPrice')) chips.push({ key: 'minPrice', label: `≥ ${formatNumber(Number(get('minPrice')))} ETB` });
   if (get('maxPrice')) chips.push({ key: 'maxPrice', label: `≤ ${formatNumber(Number(get('maxPrice')))} ETB` });

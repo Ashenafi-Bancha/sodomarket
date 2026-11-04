@@ -9,11 +9,11 @@ and the whole site works in **Wolaytta, Amharic and English**.
 | For | Features |
 | --- | --- |
 | Categories | **Homes:** house / villa, apartment, condominium, room / service house, student housing · **Land:** residential, commercial, farm land · **Commercial:** shop, office, whole building (G+), warehouse / workshop, hotel / guest house, café / restaurant, event / wedding hall · **Vehicles:** cars, motorcycles, trucks, commercial |
-| Buyers & tenants | Search with filters (zone, price, bedrooms, year, fuel…), sort, save favourites, call / WhatsApp / message sellers, book viewings — no account needed to contact a seller |
-| Owners, brokers & dealers | 5-step listing wizard with photo upload (photos are shrunk in the browser to save data), draft saved on the device, edit & resubmit, mark as sold / rented / hidden |
+| Buyers & tenants | Search with filters (zone, price, bedrooms, year, fuel, must-have features such as title deed or duty paid…), sort, save favourites, call / WhatsApp / message sellers, book viewings, seller profile pages with all their ads — no account needed to contact a seller |
+| Owners, brokers & dealers | 5-step listing wizard with photo upload (photos are shrunk in the browser to save data), feature checklist (title deed, water tank, generator… / duty paid, libre, bolo…), draft saved on the device, edit & resubmit, mark as sold / rented / hidden |
 | Workspace | Inquiry pipeline with stages and private notes, viewing calendar (confirm / complete / cancel buyer requests), deals & commission tracking, saved listings, sent messages, profile & password |
-| Admins | Review queue (approve / request changes / reject, duplicate warnings), reports (resolve, take listing down), user verification / suspension / roles, audit trail |
-| Everyone | Phone-first design with bottom navigation, SEO (metadata, sitemap, structured data), 3 languages |
+| Admins | Review queue (approve / request changes / reject, duplicate warnings), reports (resolve, take listing down), user verification / suspension / roles, password reset (temporary password), audit trail |
+| Everyone | Phone-first design with bottom navigation, SEO (metadata, sitemap, structured data), 3 languages, Terms of Use and Privacy Policy, security headers |
 
 ## Tech
 
@@ -102,6 +102,5 @@ All use the password `DemoPass123!` (and appear as one-click buttons on the sign
 
 ## Notes
 
-- `apps/api` (NestJS) is an earlier placeholder and is **not used** or deployed — the Next.js app serves the API.
 - Wolaytta translations for newer screens are partial and fall back to English; they should be reviewed by a native speaker (`apps/web/src/locales/wal-extra.ts`).
 - The demo catalogue uses stock photos; replace them with real listings before launch.

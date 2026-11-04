@@ -83,6 +83,7 @@ export function mapListing(l: DbListing): ListingItem {
           waterConnected: p.waterConnected,
           electricityConnected: p.electricityConnected,
           parkingSpaces: opt(p.parkingSpaces),
+          features: p.features ?? [],
         }
       : undefined,
     vehicleDetails: v
@@ -96,6 +97,7 @@ export function mapListing(l: DbListing): ListingItem {
           fuelType: v.fuelType,
           condition: v.condition,
           plateCode: opt(v.plateCode),
+          features: v.features ?? [],
         }
       : undefined,
     media: l.media.map((m) => ({

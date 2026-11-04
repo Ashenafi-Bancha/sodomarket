@@ -21,10 +21,13 @@ import {
   CONDITIONS,
   FUEL_TYPES,
   FURNISHING,
+  LAND_FEATURES,
   LAND_TYPES,
   NO_ROOM_TYPES,
+  PROPERTY_FEATURES,
   PROPERTY_GROUPS,
   TRANSMISSIONS,
+  VEHICLE_FEATURES,
   VEHICLE_MAKES,
   VEHICLE_TYPES,
   ZONE_NAMES,
@@ -50,6 +53,7 @@ interface FormState {
   parkingSpaces: string;
   waterConnected: boolean;
   electricityConnected: boolean;
+  propertyFeatures: string[];
   make: string;
   model: string;
   year: string;
@@ -58,6 +62,7 @@ interface FormState {
   fuelType: FuelType;
   condition: VehicleCondition;
   plateCode: string;
+  vehicleFeatures: string[];
   price: string;
   isNegotiable: boolean;
   zone: string;
@@ -83,6 +88,8 @@ const EMPTY: FormState = {
   parkingSpaces: '',
   waterConnected: true,
   electricityConnected: true,
+  propertyFeatures: [],
+  vehicleFeatures: [],
   make: 'Toyota',
   model: '',
   year: String(new Date().getFullYear() - 5),
@@ -132,6 +139,8 @@ function fromListing(l: ListingItem): FormState {
     parkingSpaces: str(p?.parkingSpaces),
     waterConnected: p?.waterConnected ?? true,
     electricityConnected: p?.electricityConnected ?? true,
+    propertyFeatures: p?.features ?? [],
+    vehicleFeatures: v?.features ?? [],
     make: v?.make ?? 'Toyota',
     model: v?.model ?? '',
     year: str(v?.year) || EMPTY.year,
@@ -185,6 +194,42 @@ function OptionCard({
       </span>
       {active && <Check className="absolute right-4 top-4 h-5 w-5 text-brand-700" />}
     </button>
+  );
+}
+
+function FeaturePicker({
+  title,
+  hint,
+  options,
+  selected,
+  labels,
+  onToggle,
+}: {
+  title: string;
+  hint: string;
+  options: readonly string[];
+  selected: string[];
+  labels: Record<string, string>;
+  onToggle: (feature: string) => void;
+}) {
+  return (
+    <div className="sm:col-span-2">
+      <Label>{title}</Label>
+      <p className="-mt-1 mb-2.5 text-xs text-ink-500">{hint}</p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((f) => {
+          const on = selected.includes(f);
+          return (
+            <Pill key={f} active={on} onClick={() => onToggle(f)}>
+              <span className="inline-flex items-center gap-1.5">
+                {on && <Check className="h-3.5 w-3.5" />}
+                {labels[f] ?? f}
+              </span>
+            </Pill>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -254,6 +299,9 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
   const isRent = isProperty && form.transactionType === 'FOR_RENT';
   const hasRooms = isProperty && !NO_ROOM_TYPES.includes(form.propertyType);
   const isLand = isProperty && LAND_TYPES.includes(form.propertyType);
+  const propertyFeatureOptions: readonly string[] = isLand ? LAND_FEATURES : PROPERTY_FEATURES;
+  const toggleFeature = (key: 'propertyFeatures' | 'vehicleFeatures', feature: string) =>
+    set(key, form[key].includes(feature) ? form[key].filter((f) => f !== feature) : [...form[key], feature]);
 
   const steps = [t.wizard.stepType, t.wizard.stepDetails, t.wizard.stepPriceLocation, t.wizard.stepPhotos, t.wizard.stepReview];
 
@@ -312,6 +360,7 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
             waterConnected: form.waterConnected,
             electricityConnected: form.electricityConnected,
             parkingSpaces: isLand ? undefined : num(form.parkingSpaces),
+            features: form.propertyFeatures.filter((f) => propertyFeatureOptions.includes(f)),
           }
         : undefined,
       vehicleDetails: !isProperty
@@ -325,13 +374,14 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
             fuelType: form.fuelType,
             condition: form.condition,
             plateCode: form.plateCode.trim() || undefined,
+            features: form.vehicleFeatures,
           }
         : undefined,
       media: form.photos,
       ownerDeclaration: form.ownerDeclaration.trim(),
       declarationAccepted: form.declarationAccepted,
     }),
-    [form, isProperty, hasRooms, isLand]
+    [form, isProperty, hasRooms, isLand, propertyFeatureOptions]
   );
 
   const submit = async () => {
@@ -570,6 +620,14 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
                   <Checkbox label={t.listingDetail.water} checked={form.waterConnected} onChange={(e) => set('waterConnected', e.target.checked)} />
                   <Checkbox label={t.listingDetail.electricity} checked={form.electricityConnected} onChange={(e) => set('electricityConnected', e.target.checked)} />
                 </div>
+                <FeaturePicker
+                  title={t.wizard.features}
+                  hint={t.wizard.featuresHint}
+                  options={propertyFeatureOptions}
+                  selected={form.propertyFeatures}
+                  labels={t.feature}
+                  onToggle={(f) => toggleFeature('propertyFeatures', f)}
+                />
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2">
@@ -614,6 +672,14 @@ export function ListingWizard({ initial }: { initial?: ListingItem }) {
                   </Label>
                   <Input id="w-plate" value={form.plateCode} onChange={(e) => set('plateCode', e.target.value)} placeholder="Code 2, Code 3…" />
                 </div>
+                <FeaturePicker
+                  title={t.wizard.features}
+                  hint={t.wizard.featuresHint}
+                  options={VEHICLE_FEATURES}
+                  selected={form.vehicleFeatures}
+                  labels={t.feature}
+                  onToggle={(f) => toggleFeature('vehicleFeatures', f)}
+                />
               </div>
             )}
           </div>

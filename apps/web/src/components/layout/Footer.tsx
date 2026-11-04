@@ -99,7 +99,15 @@ export async function Footer() {
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
           <p>{t.footer.copyright}</p>
-          <p className="text-brand-300/70">{t.footer.madeIn}</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+            <Link href="/terms" className="hover:text-white">
+              {t.footer.terms}
+            </Link>
+            <Link href="/privacy" className="hover:text-white">
+              {t.footer.privacy}
+            </Link>
+            <span className="text-brand-300/70">{t.footer.madeIn}</span>
+          </div>
         </div>
       </div>
     </footer>

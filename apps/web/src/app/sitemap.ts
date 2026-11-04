@@ -6,13 +6,16 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-  const staticPages = ['', '/properties', '/vehicles', '/search', '/brokers', '/how-it-works', '/safety', '/about'].map((path) => ({
+  const staticPages = ['', '/properties', '/vehicles', '/search', '/brokers', '/how-it-works', '/safety', '/about', '/terms', '/privacy'].map((path) => ({
     url: `${base}${path}`,
     changeFrequency: 'daily' as const,
     priority: path === '' ? 1 : 0.7,
   }));
   const listings = await prisma.listing
     .findMany({ where: { status: 'PUBLISHED' }, select: { slug: true, updatedAt: true, asset: { select: { assetType: true } } } })
+    .catch(() => []);
+  const sellers = await prisma.user
+    .findMany({ where: { isActive: true, listings: { some: { status: 'PUBLISHED' } } }, select: { id: true, updatedAt: true } })
     .catch(() => []);
   return [
     ...staticPages,
@@ -21,6 +24,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: l.updatedAt,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+    })),
+    ...sellers.map((s) => ({
+      url: `${base}/sellers/${s.id}`,
+      lastModified: s.updatedAt,
+      changeFrequency: 'weekly' as const,
+      priority: 0.5,
     })),
   ];
 }

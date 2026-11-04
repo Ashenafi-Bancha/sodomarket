@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { prisma } from './db';
 import { listingInclude, mapListing, mapUser, userInclude } from './mappers';
 import {
+  FILTER_FEATURES,
   FUEL_TYPES,
   PROPERTY_GROUP_KEYS,
   PROPERTY_GROUPS,
@@ -39,6 +40,14 @@ const toInt = (v: string | undefined) => {
 const oneOf = <T extends string>(v: string | undefined, allowed: readonly T[]) =>
   v && (allowed as readonly string[]).includes(v) ? (v as T) : undefined;
 
+/** "TITLE_DEED,WATER_TANK" → known filter features for the asset type. */
+function parseFeatures(value: string | undefined, assetType: AssetType | undefined) {
+  if (!value || !assetType) return undefined;
+  const allowed: readonly string[] = FILTER_FEATURES[assetType];
+  const list = [...new Set(value.split(','))].filter((f) => allowed.includes(f));
+  return list.length ? list : undefined;
+}
+
 /** Turns URL search params into a validated search query. */
 export function parseSearchParams(raw: RawParams, lockAssetType?: AssetType): ListingSearchParams {
   const assetType = lockAssetType ?? oneOf<AssetType>(first(raw.assetType), ['REAL_ESTATE', 'VEHICLE']);
@@ -63,6 +72,7 @@ export function parseSearchParams(raw: RawParams, lockAssetType?: AssetType): Li
     transmission: oneOf<TransmissionType>(first(raw.transmission), TRANSMISSIONS),
     fuelType: oneOf<FuelType>(first(raw.fuelType), FUEL_TYPES),
     minYear: toInt(first(raw.minYear)),
+    features: parseFeatures(first(raw.features), assetType),
     sort: oneOf<SortOption>(first(raw.sort), ['newest', 'price_asc', 'price_desc', 'popular']) ?? 'newest',
     page: Math.max(1, toInt(first(raw.page)) ?? 1),
   };
@@ -87,6 +97,10 @@ function buildWhere(p: ListingSearchParams): Prisma.ListingWhereInput {
   if (p.transmission) vehicle.transmission = p.transmission;
   if (p.fuelType) vehicle.fuelType = p.fuelType;
   if (p.minYear) vehicle.year = { gte: p.minYear };
+  if (p.features?.length) {
+    if (p.assetType === 'VEHICLE') vehicle.features = { hasEvery: p.features };
+    else property.features = { hasEvery: p.features };
+  }
 
   if (Object.keys(property).length) asset.propertyDetails = property;
   if (Object.keys(vehicle).length) asset.vehicleDetails = vehicle;
@@ -263,6 +277,41 @@ export async function getBrokers(): Promise<BrokerProfile[]> {
       };
     })
     .sort((a, b) => Number(b.user.idVerified) - Number(a.user.idVerified) || b.listingCount - a.listingCount);
+}
+
+export interface SellerProfile {
+  user: User;
+  agencyName?: string;
+  agencyVerified?: boolean;
+  listings: ListingItem[];
+  completedCount: number;
+}
+
+/** Public profile of a seller with their live ads (null if unknown or suspended). */
+export async function getSellerProfile(id: string): Promise<SellerProfile | null> {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const row = await prisma.user.findFirst({
+    where: { id, isActive: true },
+    include: { ...userInclude, agencyMembers: { include: { agency: true } } },
+  });
+  if (!row) return null;
+  const [listings, completedCount] = await Promise.all([
+    prisma.listing.findMany({
+      where: { authorId: id, status: 'PUBLISHED' },
+      include: listingInclude,
+      orderBy: { publishedAt: 'desc' },
+      take: 60,
+    }),
+    prisma.listing.count({ where: { authorId: id, status: { in: ['SOLD', 'RENTED'] } } }),
+  ]);
+  const agency = row.agencyMembers[0]?.agency;
+  return {
+    user: { ...mapUser(row), email: '' },
+    agencyName: agency?.name,
+    agencyVerified: agency?.isVerified,
+    listings: listings.map(mapListing),
+    completedCount,
+  };
 }
 
 /** URL-safe, unique slug for a new listing. */

@@ -6,8 +6,10 @@ import {
   FUEL_TYPES,
   FURNISHING,
   MAX_PHOTOS,
+  PROPERTY_FEATURES,
   PROPERTY_TYPES,
   TRANSMISSIONS,
+  VEHICLE_FEATURES,
   VEHICLE_TYPES,
   ZONE_NAMES,
 } from '@/lib/constants';
@@ -44,6 +46,7 @@ export const listingInputSchema = z
         waterConnected: z.boolean().optional(),
         electricityConnected: z.boolean().optional(),
         parkingSpaces: optionalInt(500),
+        features: z.array(z.enum(PROPERTY_FEATURES)).max(PROPERTY_FEATURES.length).default([]),
       })
       .optional(),
     vehicleDetails: z
@@ -57,6 +60,7 @@ export const listingInputSchema = z
         fuelType: z.enum(FUEL_TYPES as [string, ...string[]]),
         condition: z.enum(CONDITIONS as [string, ...string[]]),
         plateCode: z.string().trim().max(20).optional(),
+        features: z.array(z.enum(VEHICLE_FEATURES)).max(VEHICLE_FEATURES.length).default([]),
       })
       .optional(),
     media: z

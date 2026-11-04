@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Input';
 import { Avatar, EmptyState } from '@/components/ui/Misc';
+import { Modal } from '@/components/ui/Modal';
 import { StatCard } from '@/components/workspace/shared';
 import { cn } from '@/lib/cn';
 
@@ -254,12 +255,23 @@ function UsersTable({ users, currentUserId }: { users: User[]; currentUserId: st
   const toast = useToast();
   const router = useRouter();
   const [q, setQ] = useState('');
+  const [reset, setReset] = useState<{ name: string; phone: string; password: string } | null>(null);
 
   const update = async (id: string, body: Record<string, unknown>) => {
     try {
       await api.patch(`/admin/users/${id}`, body);
       toast('Updated');
       router.refresh();
+    } catch (err) {
+      toast(errorMessage(err), 'error');
+    }
+  };
+
+  const resetPassword = async (u: User) => {
+    if (!window.confirm(`Reset the password for ${u.fullName}? Only do this after confirming it is them, by phone.`)) return;
+    try {
+      const res = await api.patch<{ temporaryPassword?: string }>(`/admin/users/${u.id}`, { resetPassword: true });
+      if (res.temporaryPassword) setReset({ name: u.fullName, phone: u.phone, password: res.temporaryPassword });
     } catch (err) {
       toast(errorMessage(err), 'error');
     }
@@ -333,12 +345,17 @@ function UsersTable({ users, currentUserId }: { users: User[]; currentUserId: st
                 </td>
                 <td className="px-5 py-3">
                   {u.id !== currentUserId && (
-                    <button
-                      onClick={() => update(u.id, { isActive: !u.isActive })}
-                      className={cn('text-xs font-semibold', u.isActive ? 'text-red-600 hover:underline' : 'text-brand-700 hover:underline')}
-                    >
-                      {u.isActive ? 'Suspend' : 'Reactivate'}
-                    </button>
+                    <div className="flex flex-col items-start gap-1.5">
+                      <button
+                        onClick={() => update(u.id, { isActive: !u.isActive })}
+                        className={cn('text-xs font-semibold', u.isActive ? 'text-red-600 hover:underline' : 'text-brand-700 hover:underline')}
+                      >
+                        {u.isActive ? 'Suspend' : 'Reactivate'}
+                      </button>
+                      <button onClick={() => resetPassword(u)} className="text-xs font-semibold text-ink-600 hover:underline">
+                        Reset password
+                      </button>
+                    </div>
                   )}
                 </td>
               </tr>
@@ -346,6 +363,30 @@ function UsersTable({ users, currentUserId }: { users: User[]; currentUserId: st
           </tbody>
         </table>
       </div>
+      <Modal isOpen={!!reset} onClose={() => setReset(null)} title="Temporary password" subtitle={reset ? `For ${reset.name} · ${reset.phone}` : undefined}>
+        {reset && (
+          <div className="space-y-4">
+            <p className="rounded-2xl bg-ink-50 p-4 text-center font-mono text-2xl font-bold tracking-wider text-ink-900">{reset.password}</p>
+            <p className="text-sm leading-relaxed text-ink-600">
+              Tell the user this password by phone. It is shown only once. They should sign in and choose a new password under Workspace → Profile.
+            </p>
+            <div className="flex gap-2">
+              <Button
+                className="flex-1"
+                onClick={() => {
+                  navigator.clipboard?.writeText(reset.password).catch(() => {});
+                  toast('Copied');
+                }}
+              >
+                Copy
+              </Button>
+              <Button variant="outline" className="flex-1" onClick={() => setReset(null)}>
+                Done
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

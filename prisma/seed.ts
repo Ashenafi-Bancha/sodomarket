@@ -80,6 +80,39 @@ type ListingSeed = {
   vehicle?: VehicleSpec;
 };
 
+/** Feature checklists for the demo listings, by slug. */
+const FEATURES: Record<string, string[]> = {
+  'modern-g1-family-home-mehal-ketema': ['TITLE_DEED', 'WATER_TANK', 'THREE_PHASE_POWER', 'FENCED_COMPOUND', 'ASPHALT_ACCESS', 'GARDEN'],
+  'elegant-3-bedroom-villa-otona': ['TITLE_DEED', 'WATER_TANK', 'FENCED_COMPOUND', 'GARDEN', 'SERVICE_QUARTER'],
+  'luxury-contemporary-villa-pool-mehal-ketema': ['TITLE_DEED', 'WATER_TANK', 'GENERATOR', 'SOLAR', 'FENCED_COMPOUND', 'SECURITY_GUARD', 'ASPHALT_ACCESS', 'GARDEN', 'INTERNET'],
+  'modern-townhouse-arada': ['TITLE_DEED', 'WATER_TANK', 'BALCONY', 'FENCED_COMPOUND'],
+  'brick-family-home-double-garage-wadu': ['TITLE_DEED', 'FENCED_COMPOUND', 'GARDEN', 'SERVICE_QUARTER'],
+  'family-house-for-rent-ligaba': ['WATER_TANK', 'FENCED_COMPOUND', 'GARDEN'],
+  'cozy-1-bedroom-apartment-merkato': ['WATER_TANK', 'BALCONY', 'INTERNET'],
+  'commercial-retail-shop-arada-market': ['ASPHALT_ACCESS', 'THREE_PHASE_POWER'],
+  'cafe-restaurant-space-merkato': ['ASPHALT_ACCESS', 'THREE_PHASE_POWER', 'WATER_TANK'],
+  'modern-office-floor-boditi-road': ['ASPHALT_ACCESS', 'GENERATOR', 'INTERNET', 'SECURITY_GUARD'],
+  'warehouse-humbo-gate': ['THREE_PHASE_POWER', 'FENCED_COMPOUND', 'SECURITY_GUARD', 'ASPHALT_ACCESS'],
+  'boutique-guest-house-pool-arada': ['TITLE_DEED', 'WATER_TANK', 'GENERATOR', 'FENCED_COMPOUND', 'SECURITY_GUARD', 'GARDEN', 'INTERNET'],
+  '250m2-residential-plot-boditi-road': ['TITLE_DEED', 'THREE_PHASE_POWER'],
+  '2-bedroom-condominium-otona': ['TITLE_DEED', 'WATER_TANK', 'SECURITY_GUARD', 'BALCONY'],
+  'service-room-for-rent-ligaba': ['WATER_TANK', 'FENCED_COMPOUND'],
+  'student-hostel-beds-otona': ['WATER_TANK', 'SECURITY_GUARD', 'INTERNET', 'FENCED_COMPOUND'],
+  'coffee-enset-farm-land-damota': ['TITLE_DEED'],
+  'g3-mixed-use-building-merkato': ['TITLE_DEED', 'WATER_TANK', 'THREE_PHASE_POWER', 'ASPHALT_ACCESS', 'GENERATOR'],
+  'event-wedding-hall-boditi-road': ['GENERATOR', 'FENCED_COMPOUND', 'ASPHALT_ACCESS', 'SECURITY_GUARD'],
+  'furnished-2-bedroom-apartment-ligaba': ['WATER_TANK', 'BALCONY', 'INTERNET'],
+  'red-brick-house-wadu': ['TITLE_DEED', 'FENCED_COMPOUND', 'GARDEN'],
+  'toyota-camry-2019-hybrid': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'INSURED', 'ONE_OWNER', 'SERVICE_HISTORY', 'AIR_CONDITIONING', 'REVERSE_CAMERA', 'LEATHER_SEATS'],
+  'toyota-hilux-double-cabin-2018-diesel': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'INSURED', 'FOUR_WHEEL_DRIVE', 'AIR_CONDITIONING'],
+  'mercedes-benz-gle-coupe-2018': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'INSURED', 'SERVICE_HISTORY', 'AIR_CONDITIONING', 'FOUR_WHEEL_DRIVE', 'REVERSE_CAMERA', 'LEATHER_SEATS'],
+  'honda-crv-2017-awd': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'FOUR_WHEEL_DRIVE', 'AIR_CONDITIONING', 'REVERSE_CAMERA'],
+  'ford-expedition-7-seater-2016': ['DUTY_PAID', 'LIBRE_READY', 'AIR_CONDITIONING', 'FOUR_WHEEL_DRIVE', 'LEATHER_SEATS'],
+  'nissan-juke-2016': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'ONE_OWNER', 'AIR_CONDITIONING'],
+  'scania-cargo-truck-2016': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'INSURED', 'SERVICE_HISTORY'],
+  '150cc-motorcycle-merkato': ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID'],
+};
+
 const LISTINGS: ListingSeed[] = [
   {
     slug: 'modern-g1-family-home-mehal-ketema',
@@ -999,8 +1032,8 @@ async function main() {
         location: {
           create: { city: 'Wolaita Sodo', zone: l.zone, kebele: l.kebele, landmark: l.landmark },
         },
-        propertyDetails: l.property ? { create: l.property } : undefined,
-        vehicleDetails: l.vehicle ? { create: l.vehicle } : undefined,
+        propertyDetails: l.property ? { create: { ...l.property, features: FEATURES[l.slug] ?? [] } } : undefined,
+        vehicleDetails: l.vehicle ? { create: { ...l.vehicle, features: FEATURES[l.slug] ?? [] } } : undefined,
       },
     });
 

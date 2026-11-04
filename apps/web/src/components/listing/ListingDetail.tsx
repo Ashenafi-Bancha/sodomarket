@@ -35,6 +35,47 @@ import { formatDate, formatNumber, listingPath } from '@/lib/formatters';
 import { categoryLabel, offerLabel } from '@/lib/labels';
 import { platformConfig } from '@/lib/config';
 import { LAND_TYPES } from '@/lib/constants';
+import {
+  Armchair,
+  Camera,
+  ClipboardCheck,
+  DoorOpen,
+  Fence,
+  FileCheck2,
+  Mountain,
+  Receipt,
+  Route,
+  Snowflake,
+  Sun,
+  UserCheck,
+  Wifi,
+  Wrench,
+} from 'lucide-react';
+
+const FEATURE_ICONS: Record<string, React.ElementType> = {
+  TITLE_DEED: FileCheck2,
+  WATER_TANK: Droplets,
+  GENERATOR: Zap,
+  SOLAR: Sun,
+  THREE_PHASE_POWER: Zap,
+  FENCED_COMPOUND: Fence,
+  SECURITY_GUARD: ShieldCheck,
+  ASPHALT_ACCESS: Route,
+  GARDEN: Trees,
+  SERVICE_QUARTER: BedDouble,
+  BALCONY: DoorOpen,
+  INTERNET: Wifi,
+  DUTY_PAID: Receipt,
+  LIBRE_READY: FileCheck2,
+  BOLO_VALID: ClipboardCheck,
+  INSURED: ShieldCheck,
+  ONE_OWNER: UserCheck,
+  SERVICE_HISTORY: Wrench,
+  AIR_CONDITIONING: Snowflake,
+  FOUR_WHEEL_DRIVE: Mountain,
+  REVERSE_CAMERA: Camera,
+  LEATHER_SEATS: Armchair,
+};
 import { Badge } from '@/components/ui/Badge';
 import { ListingGallery } from './ListingGallery';
 import { ContactPanel } from './ContactPanel';
@@ -107,6 +148,9 @@ export async function ListingDetail({ slug, expected }: { slug: string; expected
     features.push({ icon: Sofa, label: t.furnishing[p.furnishing] });
   }
   if (p?.parkingSpaces) features.push({ icon: Car, label: `${t.listingDetail.parking}: ${p.parkingSpaces}` });
+  for (const f of [...(p?.features ?? []), ...(v?.features ?? [])]) {
+    features.push({ icon: FEATURE_ICONS[f] ?? CircleCheck, label: t.feature[f] ?? f });
+  }
 
   const mapQuery = encodeURIComponent(
     [listing.location.landmark, listing.location.zone, 'Wolaita Sodo, Ethiopia'].filter(Boolean).join(', ')

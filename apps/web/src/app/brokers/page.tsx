@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { BadgeCheck, Building2, Car, House, Phone } from 'lucide-react';
 import { getT } from '@/lib/i18n-server';
 import { getBrokers } from '@/lib/server/listings';
-import { formatDate, formatPhone } from '@/lib/formatters';
+import { formatDate } from '@/lib/formatters';
 import { sellerTypeLabel } from '@/lib/labels';
 import { Avatar } from '@/components/ui/Misc';
 import { Badge } from '@/components/ui/Badge';
@@ -33,7 +34,9 @@ export default async function BrokersPage() {
               <Avatar name={b.user.fullName} src={b.user.avatarUrl} size="lg" />
               <div className="min-w-0">
                 <h2 className="flex items-center gap-1.5 text-lg font-bold text-ink-900">
-                  <span className="truncate">{b.user.fullName}</span>
+                  <Link href={`/sellers/${b.user.id}`} className="truncate hover:text-brand-700">
+                    {b.user.fullName}
+                  </Link>
                   {b.user.idVerified && <BadgeCheck className="h-5 w-5 shrink-0 text-brand-600" />}
                 </h2>
                 <p className="text-sm text-ink-500">{sellerTypeLabel(b.user.role, t)}</p>
@@ -75,12 +78,20 @@ export default async function BrokersPage() {
                   </span>
                 )}
               </div>
-              <a
-                href={`tel:${b.user.phone}`}
-                className="mt-4 flex h-11 items-center justify-center gap-2 rounded-xl bg-ink-900 text-sm font-semibold text-white hover:bg-ink-800"
-              >
-                <Phone className="h-4 w-4" /> {formatPhone(b.user.phone)}
-              </a>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <Link
+                  href={`/sellers/${b.user.id}`}
+                  className="flex h-11 items-center justify-center rounded-xl text-sm font-semibold text-ink-800 ring-1 ring-inset ring-ink-200 hover:bg-ink-50"
+                >
+                  {t.seller.liveAds} ({b.listingCount})
+                </Link>
+                <a
+                  href={`tel:${b.user.phone}`}
+                  className="flex h-11 items-center justify-center gap-2 rounded-xl bg-ink-900 text-sm font-semibold text-white hover:bg-ink-800"
+                >
+                  <Phone className="h-4 w-4" /> {t.listingDetail.callNow}
+                </a>
+              </div>
             </div>
           </article>
         ))}

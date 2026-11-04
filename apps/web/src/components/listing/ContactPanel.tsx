@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BadgeCheck, CalendarCheck, MessageCircle, Pencil, Phone, ShieldCheck, LayoutDashboard } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, BadgeCheck, CalendarCheck, MessageCircle, Pencil, Phone, ShieldCheck, LayoutDashboard } from 'lucide-react';
 import type { ListingItem } from '@/lib/types';
 import { useTranslation } from '@/lib/i18n-context';
 import { formatDate, formatPhone, formatPrice, formatPriceCompact, isRental, whatsappLink } from '@/lib/formatters';
@@ -94,10 +95,10 @@ export function ContactPanel({ listing, isOwner }: { listing: ListingItem; isOwn
           <div className="flex items-center gap-3">
             <Avatar name={seller.fullName} src={seller.avatarUrl} size="lg" />
             <div className="min-w-0">
-              <p className="flex items-center gap-1.5 truncate font-bold text-ink-900">
+              <Link href={`/sellers/${seller.id}`} className="flex items-center gap-1.5 truncate font-bold text-ink-900 hover:text-brand-700">
                 {seller.fullName}
                 {seller.idVerified && <BadgeCheck className="h-[18px] w-[18px] shrink-0 text-brand-600" aria-label={t.common.verified} />}
-              </p>
+              </Link>
               <p className="text-sm text-ink-500">{sellerTypeLabel(seller.role, t)}</p>
               {seller.createdAt && (
                 <p className="text-xs text-ink-400">
@@ -121,6 +122,12 @@ export function ContactPanel({ listing, isOwner }: { listing: ListingItem; isOwn
               )}
             </div>
           )}
+          <Link
+            href={`/sellers/${seller.id}`}
+            className="mt-4 flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-sm font-bold text-brand-700 ring-1 ring-inset ring-brand-200 hover:bg-brand-50"
+          >
+            {t.seller.viewAll} <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
 

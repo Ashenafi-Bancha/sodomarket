@@ -27,6 +27,21 @@ export function ContentPage({
   );
 }
 
+/** Numbered section for long-form pages such as Terms and Privacy. */
+export function LegalSection({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+  return (
+    <section className="border-t border-ink-100 py-7 first:border-t-0 first:pt-0">
+      <h2 className="flex items-baseline gap-3 text-lg font-bold text-ink-900">
+        <span className="text-sm font-extrabold text-brand-600">{String(n).padStart(2, '0')}</span>
+        {title}
+      </h2>
+      <div className="mt-3 space-y-3 pl-8 text-[15px] leading-relaxed text-ink-600 [&_li]:ml-4 [&_ul]:list-disc [&_ul]:space-y-1.5">
+        {children}
+      </div>
+    </section>
+  );
+}
+
 export function InfoCard({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-3xl bg-white p-6 ring-1 ring-ink-100">

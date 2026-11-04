@@ -253,6 +253,8 @@ model PropertyDetails {
   waterConnected       Boolean          @default(true)
   electricityConnected Boolean          @default(true)
   parkingSpaces        Int?             @default(0)
+  // Checklist keys such as TITLE_DEED, WATER_TANK, GENERATOR (see PROPERTY_FEATURES)
+  features             String[]         @default([])
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
 
@@ -272,6 +274,8 @@ model VehicleDetails {
   fuelType     FuelType         @default(BENZINE)
   condition    VehicleCondition @default(GOOD)
   plateCode    String?          // e.g. Code 3, Code 2 (publicized only as verified flag)
+  // Checklist keys such as DUTY_PAID, BOLO_VALID, LIBRE_READY (see VEHICLE_FEATURES)
+  features     String[]         @default([])
   createdAt    DateTime         @default(now())
   updatedAt    DateTime         @updatedAt
 

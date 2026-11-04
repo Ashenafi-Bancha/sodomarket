@@ -94,6 +94,7 @@ export interface PropertyDetails {
   waterConnected?: boolean;
   electricityConnected?: boolean;
   parkingSpaces?: number;
+  features: string[];
 }
 
 export interface VehicleDetails {
@@ -106,6 +107,7 @@ export interface VehicleDetails {
   fuelType: FuelType;
   condition: VehicleCondition;
   plateCode?: string;
+  features: string[];
 }
 
 export interface ListingMedia {
@@ -240,6 +242,7 @@ export interface ListingSearchParams {
   transmission?: TransmissionType;
   fuelType?: FuelType;
   minYear?: number;
+  features?: string[]; // all must match, e.g. TITLE_DEED, DUTY_PAID
   sort?: SortOption;
   page?: number;
   pageSize?: number;

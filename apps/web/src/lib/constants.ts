@@ -49,6 +49,47 @@ export function propertyGroupOf(type: PropertyType): PropertyGroup {
   return PROPERTY_GROUPS.find((g) => g.types.includes(type))?.key ?? 'COMMERCIAL';
 }
 
+/** Property checklist, chosen for what buyers in Sodo ask about first. */
+export const PROPERTY_FEATURES = [
+  'TITLE_DEED',
+  'WATER_TANK',
+  'GENERATOR',
+  'SOLAR',
+  'THREE_PHASE_POWER',
+  'FENCED_COMPOUND',
+  'SECURITY_GUARD',
+  'ASPHALT_ACCESS',
+  'GARDEN',
+  'SERVICE_QUARTER',
+  'BALCONY',
+  'INTERNET',
+] as const;
+export type PropertyFeature = (typeof PROPERTY_FEATURES)[number];
+
+/** The property features that make sense for a bare plot. */
+export const LAND_FEATURES: PropertyFeature[] = ['TITLE_DEED', 'FENCED_COMPOUND', 'ASPHALT_ACCESS', 'THREE_PHASE_POWER'];
+
+/** Vehicle checklist: Ethiopian paperwork first (duty, bolo, libre), then equipment. */
+export const VEHICLE_FEATURES = [
+  'DUTY_PAID',
+  'LIBRE_READY',
+  'BOLO_VALID',
+  'INSURED',
+  'ONE_OWNER',
+  'SERVICE_HISTORY',
+  'AIR_CONDITIONING',
+  'FOUR_WHEEL_DRIVE',
+  'REVERSE_CAMERA',
+  'LEATHER_SEATS',
+] as const;
+export type VehicleFeature = (typeof VEHICLE_FEATURES)[number];
+
+/** Trust features buyers can filter by. */
+export const FILTER_FEATURES = {
+  REAL_ESTATE: ['TITLE_DEED', 'WATER_TANK', 'GENERATOR', 'FENCED_COMPOUND', 'ASPHALT_ACCESS'],
+  VEHICLE: ['DUTY_PAID', 'LIBRE_READY', 'BOLO_VALID', 'ONE_OWNER'],
+} as const;
+
 export const VEHICLE_TYPES: VehicleType[] = ['CAR', 'MOTORCYCLE', 'TRUCK', 'COMMERCIAL'];
 export const TRANSMISSIONS: TransmissionType[] = ['AUTOMATIC', 'MANUAL'];
 export const FUEL_TYPES: FuelType[] = ['BENZINE', 'DIESEL', 'HYBRID', 'ELECTRIC'];

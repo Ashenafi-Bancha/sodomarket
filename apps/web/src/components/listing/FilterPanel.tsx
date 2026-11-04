@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { RotateCcw, Search } from 'lucide-react';
 import type { AssetType } from '@/lib/types';
 import { useTranslation } from '@/lib/i18n-context';
-import { FUEL_TYPES, PROPERTY_GROUPS, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
+import { FILTER_FEATURES, FUEL_TYPES, PROPERTY_GROUPS, VEHICLE_TYPES, ZONE_NAMES } from '@/lib/constants';
 import { Select } from '@/components/ui/Input';
 import { useFilterParams } from './useFilterParams';
 import { cn } from '@/lib/cn';
@@ -120,7 +120,7 @@ export function FilterPanel({ lockAssetType, onApplied }: { lockAssetType?: Asse
         <Section title={t.listingDetail.propertyType}>
           <Segmented
             value={assetType}
-            onChange={(v) => update({ assetType: v, category: null, transactionType: null, bedrooms: null, transmission: null, fuelType: null, minYear: null })}
+            onChange={(v) => update({ assetType: v, category: null, transactionType: null, bedrooms: null, transmission: null, fuelType: null, minYear: null, features: null })}
             options={[
               { value: '', label: t.common.all },
               { value: 'REAL_ESTATE', label: t.home.tabProperties },
@@ -193,6 +193,23 @@ export function FilterPanel({ lockAssetType, onApplied }: { lockAssetType?: Asse
             </div>
           </Section>
         </>
+      )}
+
+      {(assetType === 'REAL_ESTATE' || assetType === 'VEHICLE') && (
+        <Section title={t.filters.mustHave}>
+          <div className="flex flex-wrap gap-2">
+            {FILTER_FEATURES[assetType].map((f) => {
+              const selected = (get('features') || '').split(',').filter(Boolean);
+              const on = selected.includes(f);
+              const next = on ? selected.filter((x) => x !== f) : [...selected, f];
+              return (
+                <Chip key={f} active={on} onClick={() => set('features', next.join(','))}>
+                  {t.feature[f]}
+                </Chip>
+              );
+            })}
+          </div>
+        </Section>
       )}
 
       {assetType === 'VEHICLE' && (

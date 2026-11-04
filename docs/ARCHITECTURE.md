@@ -15,7 +15,6 @@ SodoMarketHub/
 │   │   └── types.ts         Shared types used by server and client
 │   └── locales/             en (base), am, wal — missing keys fall back to English
 ├── prisma/                  schema.prisma, migrations/, seed.ts
-├── apps/api/                Earlier NestJS placeholder — not used
 └── docs/
 ```
 
@@ -23,7 +22,8 @@ SodoMarketHub/
 
 - Pages are **server components**. They read the visitor's session (`lib/server/session.ts`) and language cookie, then query the database directly through `lib/server/listings.ts` and `lib/server/workspace.ts`.
 - Interactive parts (filters, gallery, contact forms, wizard, workspace tabs) are **client components**. They change data by calling the REST API (`lib/api-client.ts`) and then `router.refresh()` so server data re-renders.
-- Browse filters live in the URL (`?zone=Arada&category=HOUSE&sort=price_asc`), so searches can be shared and the back button works.
+- Browse filters live in the URL (`?zone=Arada&category=HOUSE&features=TITLE_DEED,WATER_TANK&sort=price_asc`), so searches can be shared and the back button works. `category` is one type (`HOUSE`) or a group (`RESIDENTIAL`, `LAND`, `COMMERCIAL`).
+- Seller pages (`/sellers/:id`) show a seller's public profile and live ads.
 
 ## Data model (Prisma)
 
@@ -66,4 +66,4 @@ confirms the viewing, and records a deal with commission.
 | `GET/POST appointments`, `PATCH appointments/:id` | Viewings |
 | `GET/POST deals`, `PATCH deals/:id` | Deals and commission |
 | `GET/POST reports`, `PATCH reports/:id` | Listing reports |
-| `POST admin/listings/:id`, `PATCH admin/users/:id` | Moderation and user management |
+| `POST admin/listings/:id`, `PATCH admin/users/:id` | Moderation and user management (verify, suspend, role, `resetPassword` → temporary password) |

@@ -66,7 +66,12 @@ export function LoginForm({ next, demoMode }: { next?: string; demoMode: boolean
           <Input id="identifier" value={identifier} onChange={(e) => setIdentifier(e.target.value)} autoComplete="username" required />
         </div>
         <div>
-          <Label htmlFor="password">{t.auth.password}</Label>
+          <div className="flex items-baseline justify-between gap-3">
+            <Label htmlFor="password">{t.auth.password}</Label>
+            <Link href="/forgot-password" className="text-xs font-semibold text-brand-700 hover:underline">
+              {t.auth.forgotPassword}
+            </Link>
+          </div>
           <div className="relative">
             <Input
               id="password"

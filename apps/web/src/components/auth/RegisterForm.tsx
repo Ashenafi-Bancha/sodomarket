@@ -117,6 +117,17 @@ export function RegisterForm({ next, initialType }: { next?: string; initialType
         <Button type="submit" size="lg" className="w-full" isLoading={busy}>
           {busy ? t.auth.creating : t.auth.createAccount}
         </Button>
+        <p className="text-center text-xs leading-relaxed text-ink-500">
+          {t.auth.agreePrefix}{' '}
+          <Link href="/terms" className="font-semibold text-ink-700 underline-offset-2 hover:underline">
+            {t.footer.terms}
+          </Link>{' '}
+          {t.auth.and}{' '}
+          <Link href="/privacy" className="font-semibold text-ink-700 underline-offset-2 hover:underline">
+            {t.footer.privacy}
+          </Link>
+          .
+        </p>
       </form>
 
       <p className="mt-6 text-center text-sm text-ink-500">

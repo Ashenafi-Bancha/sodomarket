@@ -1,11 +1,11 @@
 /**
  * Zamana Market brand assets (public/brand/zamana-logo-pack).
  *
- * The pack has four logo directions: A-exchange-z, B-open-stall, C-damota-road, D-z-cart.
- * To switch the whole site to another one, change DIRECTION below, then re-create the PNG
+ * The site uses the Z-cart logo (D-z-cart).
+ * If another direction is added to the pack, change DIRECTION below, then re-create the PNG
  * icons (public/brand/icons, app/apple-icon.png, app/opengraph-image.png) and app/icon.svg.
  */
-const DIRECTION = 'A-exchange-z';
+const DIRECTION = 'D-z-cart';
 
 const file = (variant: string) => `/brand/zamana-logo-pack/${DIRECTION}/${DIRECTION}_${variant}.svg`;
 

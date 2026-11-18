@@ -49,12 +49,12 @@ export function fmt(template: string, values: Record<string, string | number>) {
 
 /**
  * Languages in the selector. `enabled: false` shows the language as "coming soon" and
- * keeps everyone on an enabled one. To open Amharic or English, set `enabled: true`.
+ * keeps everyone on an enabled one. To open Wolaytta or Amharic, set `enabled: true`.
  */
 export const availableLocales: { code: Locale; label: string; nativeLabel: string; enabled: boolean }[] = [
-  { code: 'wal', label: 'Wolaytta', nativeLabel: 'Wolayttatto', enabled: true },
+  { code: 'en', label: 'English', nativeLabel: 'English', enabled: true },
+  { code: 'wal', label: 'Wolaytta', nativeLabel: 'Wolayttatto', enabled: false },
   { code: 'am', label: 'Amharic', nativeLabel: 'አማርኛ', enabled: false },
-  { code: 'en', label: 'English', nativeLabel: 'English', enabled: false },
 ];
 
 export function isEnabledLocale(value: unknown): value is Locale {

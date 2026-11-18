@@ -21,7 +21,7 @@ export const platformConfig: PlatformConfig = {
   brandName: process.env.NEXT_PUBLIC_PLATFORM_NAME || 'Zamana Market',
   subTitle: 'Wolaita Sodo',
   tagline: process.env.NEXT_PUBLIC_PLATFORM_TAGLINE || 'Discover, Advertise, and Connect for Properties & Vehicles in Wolaita',
-  defaultLocale: (process.env.NEXT_PUBLIC_DEFAULT_LOCALE as 'wal' | 'am' | 'en') || 'wal',
+  defaultLocale: (process.env.NEXT_PUBLIC_DEFAULT_LOCALE as 'wal' | 'am' | 'en') || 'en',
   defaultCurrency: 'ETB',
   primaryLocation: 'Wolaita Sodo, Ethiopia',
   supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || '+251 90 000 0000',

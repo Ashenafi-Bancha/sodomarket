@@ -9,7 +9,7 @@ import type {
   ListingStatus,
 } from './types';
 
-/** Neighbourhoods of Wolaita Sodo used for search and listing locations. */
+/** Areas used for search and listing locations (currently the launch city's neighbourhoods). */
 export const ZONES: { name: string; description: string }[] = [
   { name: 'Mehal Ketema', description: 'Town centre, banks & civic offices' },
   { name: 'Merkato', description: 'Main market & commercial hub' },
@@ -49,7 +49,7 @@ export function propertyGroupOf(type: PropertyType): PropertyGroup {
   return PROPERTY_GROUPS.find((g) => g.types.includes(type))?.key ?? 'COMMERCIAL';
 }
 
-/** Property checklist, chosen for what buyers in Sodo ask about first. */
+/** Property checklist, chosen for what buyers ask about first. */
 export const PROPERTY_FEATURES = [
   'TITLE_DEED',
   'WATER_TANK',

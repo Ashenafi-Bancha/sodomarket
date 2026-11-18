@@ -10,8 +10,8 @@ import { Badge } from '@/components/ui/Badge';
 import { ButtonLink } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
-  title: 'Verified Brokers & Dealers in Wolaita Sodo',
-  description: 'Licensed real estate brokers and vehicle dealers serving Wolaita Sodo.',
+  title: 'Verified Brokers & Dealers',
+  description: 'Licensed real estate brokers and vehicle dealers.',
 };
 
 export default async function BrokersPage() {

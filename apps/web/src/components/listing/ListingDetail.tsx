@@ -33,7 +33,6 @@ import { getCurrentUser } from '@/lib/server/session';
 import { getFavoriteIds, getListingBySlug, getSimilarListings, recordView } from '@/lib/server/listings';
 import { formatDate, formatNumber, listingPath } from '@/lib/formatters';
 import { categoryLabel, offerLabel } from '@/lib/labels';
-import { platformConfig } from '@/lib/config';
 import { LAND_TYPES } from '@/lib/constants';
 import {
   Armchair,
@@ -153,7 +152,7 @@ export async function ListingDetail({ slug, expected }: { slug: string; expected
   }
 
   const mapQuery = encodeURIComponent(
-    [listing.location.landmark, listing.location.zone, 'Wolaita Sodo, Ethiopia'].filter(Boolean).join(', ')
+    [listing.location.landmark, listing.location.zone, listing.location.city, 'Ethiopia'].filter(Boolean).join(', ')
   );
 
   const jsonLd = {
@@ -168,7 +167,7 @@ export async function ListingDetail({ slug, expected }: { slug: string; expected
       price: listing.price,
       priceCurrency: listing.currency,
       availability: listing.status === 'PUBLISHED' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut',
-      areaServed: `${listing.location.zone}, Wolaita Sodo`,
+      areaServed: [listing.location.zone, listing.location.city].filter(Boolean).join(', '),
       seller: { '@type': listing.agency ? 'Organization' : 'Person', name: listing.agency?.name ?? listing.author.fullName },
     },
   };
@@ -309,7 +308,7 @@ export async function ListingDetail({ slug, expected }: { slug: string; expected
               <div className="flex flex-col gap-4 bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1 text-[15px]">
                   <p className="font-bold text-ink-900">
-                    {listing.location.zone}, {platformConfig.primaryLocation}
+                    {[listing.location.zone, listing.location.city].filter(Boolean).join(', ')}
                   </p>
                   {listing.location.landmark && (
                     <p className="flex items-start gap-2 text-ink-600">

@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/cn';
 import { initials } from '@/lib/formatters';
 
-/** Brand mark: a roofline over Mount Damota with the Sodo sun. */
+/** Brand mark: a roofline with a rising sun. */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 40 40" className={cn('h-10 w-10', className)} aria-hidden>

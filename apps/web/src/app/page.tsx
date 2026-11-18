@@ -119,7 +119,7 @@ export default async function HomePage() {
                 </span>
                 <span>
                   <span className="block text-sm font-bold">{t.home.trustReviewed}</span>
-                  <span className="block text-xs text-ink-500">{heroImages[0].zone}, Wolaita Sodo</span>
+                  <span className="block text-xs text-ink-500">{heroImages[0].zone}</span>
                 </span>
               </div>
             </div>

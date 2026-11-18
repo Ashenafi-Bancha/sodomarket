@@ -3,8 +3,8 @@ import { BrowseView } from '@/components/listing/BrowseView';
 import { getT } from '@/lib/i18n-server';
 
 export const metadata: Metadata = {
-  title: 'Search Listings in Wolaita Sodo',
-  description: 'Search properties and vehicles across Wolaita Sodo.',
+  title: 'Search Listings',
+  description: 'Search properties and vehicles.',
 };
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

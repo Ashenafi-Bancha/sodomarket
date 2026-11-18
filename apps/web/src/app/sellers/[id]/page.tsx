@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!seller) return { title: 'Seller not found', robots: { index: false } };
   const name = seller.agencyName ?? seller.user.businessName ?? seller.user.fullName;
   return {
-    title: `${name} — Ads in Wolaita Sodo`,
+    title: `${name} — Ads`,
     description: seller.user.bio ?? `${seller.listings.length} live ads from ${name} on Zamana Market.`,
   };
 }

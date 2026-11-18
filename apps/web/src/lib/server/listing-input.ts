@@ -30,7 +30,7 @@ export const listingInputSchema = z
     price: z.coerce.number().positive('Price must be greater than zero').max(100_000_000_000),
     isNegotiable: z.boolean().default(true),
     location: z.object({
-      zone: z.string().refine((z) => ZONE_NAMES.includes(z), 'Choose a zone in Wolaita Sodo'),
+      zone: z.string().refine((z) => ZONE_NAMES.includes(z), 'Choose an area'),
       kebele: z.string().trim().max(20).optional(),
       landmark: z.string().trim().max(160).optional(),
     }),

@@ -21,7 +21,7 @@ export default function TermsPage() {
       <div className="mx-auto max-w-3xl rounded-3xl bg-white p-6 ring-1 ring-ink-100 sm:p-10">
         <LegalSection n={1} title="What we are">
           <p>
-            {brandName} is an online classifieds marketplace for property and vehicles in Wolaita Sodo, Ethiopia. We connect
+            {brandName} is an online classifieds marketplace for property and vehicles in Ethiopia. We connect
             buyers and tenants with owners, licensed brokers and dealers. We are not a party to any sale or rental, we do not
             hold money for anyone, and we do not own the items advertised.
           </p>
@@ -63,7 +63,7 @@ export default function TermsPage() {
             Our <Link href="/safety" className="font-semibold text-brand-700 hover:underline">safety guide</Link> explains how.
           </p>
           <p>
-            Broker commission is agreed between you and the broker. As a guide, the usual rate in Sodo is around{' '}
+            Broker commission is agreed between you and the broker. As a guide, the usual rate is around{' '}
             {platformConfig.commissionGuidelines.realEstateStandardPercent}% for property.
           </p>
         </LegalSection>

@@ -3,8 +3,8 @@ import { BrowseView } from '@/components/listing/BrowseView';
 import { getT } from '@/lib/i18n-server';
 
 export const metadata: Metadata = {
-  title: 'Cars, Trucks & Motorcycles for Sale in Wolaita Sodo',
-  description: 'Inspected cars, SUVs, pickups, trucks and motorcycles from owners and dealers in Wolaita Sodo.',
+  title: 'Cars, Trucks & Motorcycles for Sale',
+  description: 'Inspected cars, SUVs, pickups, trucks and motorcycles from owners and dealers.',
 };
 
 export default async function VehiclesPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

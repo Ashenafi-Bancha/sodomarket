@@ -15,11 +15,11 @@ const schema = z.object({
   resetPassword: z.literal(true).optional(),
 });
 
-/** Easy-to-read temporary password, e.g. "Sodo-7K4M-29QX" (no 0/O/1/I). */
+/** Easy-to-read temporary password, e.g. "Zamana-7K4M-29QX" (no 0/O/1/I). */
 function temporaryPassword() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const part = () => Array.from({ length: 4 }, () => chars[randomInt(chars.length)]).join('');
-  return `Sodo-${part()}-${part()}`;
+  return `Zamana-${part()}-${part()}`;
 }
 
 /** Verify, suspend, change the role of, or reset the password of a user. Admins only. */

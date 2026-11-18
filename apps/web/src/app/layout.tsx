@@ -32,24 +32,24 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
   title: {
-    default: `${platformConfig.brandName} — Homes, Land & Vehicles in Wolaita Sodo`,
+    default: `${platformConfig.brandName} — Homes, Land & Vehicles`,
     template: `%s | ${platformConfig.brandName}`,
   },
   description:
-    'The trusted marketplace for houses, apartments, land, shops, offices and vehicles in Wolaita Sodo, Ethiopia. Every listing reviewed. Connect directly with verified owners and licensed brokers.',
+    'The new, trusted marketplace for houses, apartments, land, shops, offices and vehicles. Every listing reviewed. Connect directly with verified owners and licensed brokers.',
   keywords: [
-    'Wolaita Sodo',
-    'Sodo houses for sale',
-    'Wolaita real estate',
-    'house for rent Sodo',
-    'cars for sale Wolaita',
+    'houses for sale',
+    'house for rent',
+    'land for sale',
+    'cars for sale',
+    'real estate marketplace',
     'Ethiopia property',
     'Zamana Market',
   ],
   applicationName: platformConfig.brandName,
   openGraph: {
     title: `${platformConfig.brandName} — ${platformConfig.subTitle}`,
-    description: 'Verified homes, land, commercial spaces and vehicles in Wolaita Sodo.',
+    description: 'Verified homes, land, commercial spaces and vehicles.',
     siteName: platformConfig.brandName,
     type: 'website',
   },

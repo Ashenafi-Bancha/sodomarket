@@ -6,7 +6,7 @@ import { platformConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Trust & Safety',
-  description: 'How to buy, rent and sell safely in Wolaita Sodo.',
+  description: 'How to buy, rent and sell safely.',
 };
 
 export default async function SafetyPage() {
@@ -15,7 +15,7 @@ export default async function SafetyPage() {
     <ContentPage eyebrow={t.nav.safety} title="Buy, rent and sell with confidence" intro={t.footer.safetyText}>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <InfoCard icon={<FileCheck2 className="h-6 w-6" />} title="Check the title deed">
-          Ask to see the original title deed (karta) or lease certificate and verify it at the Wolaita Sodo municipal land office before paying.
+          Ask to see the original title deed (karta) or lease certificate and verify it at the local municipal land office before paying.
         </InfoCard>
         <InfoCard icon={<Car className="h-6 w-6" />} title="Check the vehicle libre">
           Confirm the libre (ownership booklet) matches the seller’s ID, the chassis and the plate number at the transport office.

@@ -20,12 +20,12 @@ import { useAuth } from '@/lib/auth-context';
 import { platformConfig } from '@/lib/config';
 import { LanguageSelector } from './LanguageSelector';
 import { ButtonLink } from '@/components/ui/Button';
-import { Avatar, LogoMark } from '@/components/ui/Misc';
+import { Avatar, BrandLogo } from '@/components/ui/Misc';
 import { cn } from '@/lib/cn';
 
 export function Navbar() {
   const pathname = usePathname();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
@@ -48,12 +48,9 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink-100/80 bg-white/85 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label={platformConfig.brandName}>
-          <LogoMark className="h-9 w-9 transition-transform group-hover:scale-105" />
-          <span className="leading-none">
-            <span className="block text-[15px] font-extrabold tracking-tight text-ink-900">{platformConfig.brandName}</span>
-            <span className="mt-0.5 block text-[11px] font-semibold text-brand-600">{platformConfig.subTitle}</span>
-          </span>
+        <Link href="/" className="flex shrink-0 items-center transition-opacity hover:opacity-85" aria-label={platformConfig.brandName}>
+          <BrandLogo height={30} geez={locale === 'am'} className="sm:hidden" />
+          <BrandLogo height={34} geez={locale === 'am'} className="hidden sm:block" />
         </Link>
 
         <nav className="hidden items-center gap-1 xl:flex" aria-label="Main">

@@ -5,7 +5,7 @@
 One Next.js 16 app (`apps/web`) serves both the website and the REST API, backed by PostgreSQL through Prisma.
 
 ```
-SodoMarketHub/
+zamanamarket/
 ├── apps/web/src/
 │   ├── app/                 Pages (App Router) and the REST API under app/api/v1
 │   ├── components/          UI kit (ui/), layout, listing, sell wizard, workspace, admin, auth

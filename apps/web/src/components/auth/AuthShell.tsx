@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { CircleCheck } from 'lucide-react';
 import { getT } from '@/lib/i18n-server';
-import { LogoMark } from '@/components/ui/Misc';
+import { BrandLogo } from '@/components/ui/Misc';
 import { platformConfig } from '@/lib/config';
 
 /** Split-screen layout for sign-in and registration. */
 export async function AuthShell({ children }: { children: React.ReactNode }) {
-  const { t } = await getT();
+  const { t, locale } = await getT();
   return (
     <div className="container-page grid min-h-[calc(100dvh-4rem)] items-center gap-10 py-10 lg:grid-cols-2">
       <div className="mx-auto w-full max-w-md">{children}</div>
@@ -19,9 +19,8 @@ export async function AuthShell({ children }: { children: React.ReactNode }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/60 to-transparent" />
         <div className="relative flex h-full flex-col justify-between p-10 text-white">
-          <Link href="/" className="flex items-center gap-2.5">
-            <LogoMark />
-            <span className="text-lg font-extrabold">{platformConfig.brandName}</span>
+          <Link href="/" className="inline-block self-start" aria-label={platformConfig.brandName}>
+            <BrandLogo tone="dark" height={40} geez={locale === 'am'} />
           </Link>
           <div>
             <h2 className="max-w-md text-3xl font-extrabold leading-tight tracking-tight">{t.auth.sideTitle}</h2>

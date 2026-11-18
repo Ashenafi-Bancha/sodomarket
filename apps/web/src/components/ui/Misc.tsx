@@ -1,23 +1,33 @@
 import React from 'react';
 import { cn } from '@/lib/cn';
 import { initials } from '@/lib/formatters';
+import { brand, LOCKUP_RATIO } from '@/lib/brand';
+import { platformConfig } from '@/lib/config';
 
-/** Brand mark: a roofline with a rising sun. */
+/** The Zamana Market logo: symbol + name. `tone` is the background it sits on. */
+export function BrandLogo({
+  tone = 'light',
+  height = 32,
+  geez = false,
+  className,
+}: {
+  tone?: 'light' | 'dark';
+  height?: number;
+  /** Ge'ez lockup (ዛማና ማርኬት) for the Amharic site. */
+  geez?: boolean;
+  className?: string;
+}) {
+  const src = geez ? (tone === 'dark' ? brand.geezOnNavy : brand.geezOnWhite) : tone === 'dark' ? brand.horizontalOnNavy : brand.horizontalOnWhite;
+  const width = Math.round(height * (geez ? LOCKUP_RATIO.geez : LOCKUP_RATIO.latin));
+  // Plain <img>: the SVGs are already tiny vectors, so image optimisation adds nothing.
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={platformConfig.brandName} width={width} height={height} className={cn('block h-auto max-w-full', className)} />;
+}
+
+/** The symbol alone, as the rounded app icon. */
 export function LogoMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" className={cn('h-10 w-10', className)} aria-hidden>
-      <defs>
-        <linearGradient id="wm-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#2557eb" />
-          <stop offset="1" stopColor="#0c1a47" />
-        </linearGradient>
-      </defs>
-      <rect width="40" height="40" rx="12" fill="url(#wm-g)" />
-      <circle cx="27.5" cy="12.5" r="3.6" fill="#e9aa2b" />
-      <path d="M8 29.5 L20 15.5 L32 29.5" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M15.5 29.5 v-5.5 h9 v5.5" fill="none" stroke="#bfd5fe" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={brand.appIcon} alt="" aria-hidden width={40} height={40} className={cn('h-10 w-10', className)} />;
 }
 
 export function Avatar({ name, src, size = 'md', className }: { name?: string; src?: string; size?: 'sm' | 'md' | 'lg'; className?: string }) {

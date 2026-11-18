@@ -3,10 +3,10 @@ import { Mail, MapPin, Phone, Send, ShieldCheck } from 'lucide-react';
 import { getT } from '@/lib/i18n-server';
 import { platformConfig } from '@/lib/config';
 import { ZONES } from '@/lib/constants';
-import { LogoMark } from '@/components/ui/Misc';
+import { BrandLogo } from '@/components/ui/Misc';
 
 export async function Footer() {
-  const { t } = await getT();
+  const { t, locale } = await getT();
 
   const columns = [
     {
@@ -38,12 +38,8 @@ export async function Footer() {
       <div className="container-page py-14">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <Link href="/" className="flex items-center gap-2.5">
-              <LogoMark className="h-10 w-10" />
-              <span>
-                <span className="block text-base font-extrabold text-white">{platformConfig.brandName}</span>
-                <span className="block text-xs font-semibold text-brand-300">{platformConfig.subTitle}</span>
-              </span>
+            <Link href="/" className="inline-block transition-opacity hover:opacity-85" aria-label={platformConfig.brandName}>
+              <BrandLogo tone="dark" height={38} geez={locale === 'am'} />
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed">{t.footer.tagline}</p>
             <div className="mt-6 space-y-2.5 text-sm">

@@ -92,13 +92,13 @@ All use the password `DemoPass123!` (and appear as one-click buttons on the sign
 
 ### Deploy on Vercel
 
-`vercel.json` deploys one service, `web` (`apps/web`), which serves the whole site including the `/api/v1` API.
+The site is one Next.js app in `apps/web`; it also serves the `/api/v1` API.
 
-1. Import the repo in Vercel (keep the project's root directory as the repo root — `vercel.json` points at `apps/web`).
+1. Import the repo in Vercel. Set **Root Directory** to `apps/web` (click **Edit** next to it) and keep **Application Preset** on **Next.js**. Leave the build settings on their defaults — `npm run build` generates the Prisma client and builds the site.
 2. Create a managed Postgres (for example Neon or Prisma Postgres from the Vercel Marketplace) and a **Blob** store under Storage. These set `DATABASE_URL` and `BLOB_READ_WRITE_TOKEN`.
-3. Add environment variables: `SESSION_SECRET` (long random string), `NEXT_PUBLIC_APP_URL` (your domain), `NEXT_PUBLIC_DEMO_MODE=false`, and the branding variables from `.env.example`.
+3. Add environment variables: `SESSION_SECRET` (long random string), `NEXT_PUBLIC_APP_URL` (your domain), `NEXT_PUBLIC_DEMO_MODE=false`, and the branding variables from `.env.example`. Don't set `NODE_ENV` — Vercel sets it.
 4. Create the tables once from your computer, with `DATABASE_URL` in `.env` pointing at the production database: `npm run db:migrate`.
-5. Deploy. Use `vercel dev` to run it locally the same way Vercel does.
+5. Deploy.
 
 ## Notes
 

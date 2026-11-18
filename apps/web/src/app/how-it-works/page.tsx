@@ -6,7 +6,7 @@ import { ButtonLink } from '@/components/ui/Button';
 
 export const metadata: Metadata = {
   title: 'How It Works',
-  description: 'How to buy, rent, sell and list on Wolaita Marketplace.',
+  description: 'How to buy, rent, sell and list on Zamana Market.',
 };
 
 function Steps({ items }: { items: { icon: React.ElementType; title: string; desc: string }[] }) {

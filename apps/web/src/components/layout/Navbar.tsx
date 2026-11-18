@@ -56,7 +56,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-1 xl:flex" aria-label="Main">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -71,7 +71,7 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-1 sm:gap-1.5">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
           <Link
             href="/search"
             className="hidden h-10 w-10 items-center justify-center rounded-xl text-ink-600 transition-colors hover:bg-ink-100 sm:flex"
@@ -102,7 +102,7 @@ export function Navbar() {
           )}
           <button
             onClick={() => setDrawerOpen((o) => !o)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-ink-700 hover:bg-ink-100 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl text-ink-700 hover:bg-ink-100 xl:hidden"
             aria-label={t.nav.menu}
             aria-expanded={drawerOpen}
           >
@@ -112,7 +112,7 @@ export function Navbar() {
       </div>
 
       {drawerOpen && (
-        <div className="animate-fade-in border-t border-ink-100 bg-white lg:hidden">
+        <div className="animate-fade-in border-t border-ink-100 bg-white xl:hidden">
           <div className="container-page space-y-5 py-5">
             <nav className="grid gap-1" aria-label="Mobile">
               {[...links, { href: '/safety', label: t.nav.safety }, { href: '/about', label: t.nav.about }].map((link) => (

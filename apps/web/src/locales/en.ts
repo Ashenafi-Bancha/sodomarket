@@ -2,9 +2,9 @@ export const en = {
   locale: 'en',
   localeName: 'English',
   brand: {
-    name: 'Wolaita Marketplace',
+    name: 'Zamana Market',
     slogan: 'Trusted Real Estate & Vehicles in Wolaita Sodo',
-    subTitle: 'Sodo Market Hub',
+    subTitle: 'Wolaita Sodo',
   },
   common: {
     save: 'Save',
@@ -289,6 +289,15 @@ export const en = {
     notPublishedTitle: 'Only you can see this listing',
     notPublishedDesc: 'It is not public yet. Current status:',
   },
+  preview: {
+    badge: 'Preview',
+    banner: 'You are seeing sample listings. Sign-in and posting open soon.',
+    contactUs: 'Contact us',
+    comingSoonTitle: 'Coming soon',
+    comingSoonText:
+      'Accounts, posting ads and messages open very soon. Until then, call or WhatsApp our team and we will help you buy, rent or list your property or vehicle.',
+    browse: 'Browse sample listings',
+  },
   seller: {
     adsBy: 'Ads by {name}',
     liveAds: 'Live ads',
@@ -349,7 +358,7 @@ export const en = {
     password: 'Password',
     signIn: 'Sign in',
     signingIn: 'Signing in…',
-    noAccount: 'New to Wolaita Marketplace?',
+    noAccount: 'New to Zamana Market?',
     createOne: 'Create a free account',
     registerTitle: 'Create your account',
     registerSubtitle: 'Free forever for buyers. Free listings during our launch.',
@@ -489,8 +498,8 @@ export const en = {
     support: 'Support',
     safetyNotice: 'Trust & Verification Notice',
     safetyText:
-      'Wolaita Marketplace connects buyers with sellers and brokers. We do not hold payments or guarantee titles. Always verify documents in person with local authorities.',
-    copyright: '© 2026 Wolaita Marketplace (Sodo Market Hub). All rights reserved.',
+      'Zamana Market connects buyers with sellers and brokers. We do not hold payments or guarantee titles. Always verify documents in person with local authorities.',
+    copyright: '© 2026 Zamana Market. All rights reserved.',
     madeIn: 'Made in Wolaita Sodo',
   },
 };

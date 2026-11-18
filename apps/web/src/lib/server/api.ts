@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { ZodError, type ZodType } from 'zod';
 import { getCurrentUser } from './session';
 import type { Role, User } from '@/lib/types';
+import { PREVIEW_MESSAGE, isConnectionError, isDatabaseReady, markDatabaseDown } from './availability';
 
 export class ApiError extends Error {
   constructor(
@@ -20,6 +21,10 @@ export function ok<T>(data: T, init?: ResponseInit) {
 /** Wraps a route handler so thrown errors become clean JSON responses. */
 export function handle<Args extends unknown[]>(fn: (...args: Args) => Promise<Response>) {
   return async (...args: Args): Promise<Response> => {
+    // Preview mode: every API call needs the database, so answer "coming soon" right away.
+    if (!(await isDatabaseReady())) {
+      return NextResponse.json({ success: false, error: PREVIEW_MESSAGE }, { status: 503 });
+    }
     try {
       return await fn(...args);
     } catch (error) {
@@ -31,6 +36,10 @@ export function handle<Args extends unknown[]>(fn: (...args: Args) => Promise<Re
         const field = issue?.path?.join('.');
         const message = issue ? (field ? `${field}: ${issue.message}` : issue.message) : 'Invalid input';
         return NextResponse.json({ success: false, error: message }, { status: 400 });
+      }
+      if (isConnectionError(error) || !(await isDatabaseReady())) {
+        if (isConnectionError(error)) markDatabaseDown(error);
+        return NextResponse.json({ success: false, error: PREVIEW_MESSAGE }, { status: 503 });
       }
       console.error('[api] unexpected error', error);
       return NextResponse.json({ success: false, error: 'Something went wrong. Please try again.' }, { status: 500 });

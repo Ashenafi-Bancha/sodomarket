@@ -1,4 +1,4 @@
-# Wolaita Marketplace — Sodo Market Hub
+# Zamana Market
 
 The digital marketplace for homes, land, shops, offices and vehicles in **Wolaita Sodo, Ethiopia**.
 Every listing is reviewed before it goes live, buyers contact verified owners and licensed brokers directly,
@@ -64,11 +64,11 @@ All use the password `DemoPass123!` (and appear as one-click buttons on the sign
 
 | Role | Email |
 | --- | --- |
-| Admin | admin@wolaitamarketplace.et |
-| Broker | broker.alemu@wolaitamarketplace.et |
-| Broker | broker.selam@wolaitamarketplace.et |
-| Car dealer | dealer.marta@wolaitamarketplace.et |
-| Private owner | seller.bekele@wolaitamarketplace.et |
+| Admin | admin@zamanamarket.et |
+| Broker | broker.alemu@zamanamarket.et |
+| Broker | broker.selam@zamanamarket.et |
+| Car dealer | dealer.marta@zamanamarket.et |
+| Private owner | seller.bekele@zamanamarket.et |
 | Buyer | buyer.tariku@gmail.com |
 
 ## Useful scripts (repo root)

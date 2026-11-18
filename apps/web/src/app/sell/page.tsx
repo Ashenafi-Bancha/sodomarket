@@ -6,7 +6,7 @@ import { ListingWizard } from '@/components/sell/ListingWizard';
 
 export const metadata: Metadata = {
   title: 'List a Property or Vehicle',
-  description: 'Advertise your property or vehicle for free on Wolaita Marketplace.',
+  description: 'Advertise your property or vehicle for free on Zamana Market.',
 };
 
 export default async function SellPage({ searchParams }: { searchParams: Promise<{ edit?: string }> }) {

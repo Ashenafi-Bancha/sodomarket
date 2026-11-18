@@ -2,6 +2,7 @@ import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
+import { isConnectionError, isDatabaseReady, markDatabaseDown } from './availability';
 import { prisma } from './db';
 import { mapUser, userInclude } from './mappers';
 import type { Role, User } from '@/lib/types';
@@ -72,7 +73,16 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
   const store = await cookies();
   const payload = decode(store.get(COOKIE_NAME)?.value);
   if (!payload) return null;
-  const user = await prisma.user.findUnique({ where: { id: payload.uid }, include: userInclude });
+  // Preview mode: nobody is signed in while the database isn't ready.
+  if (!(await isDatabaseReady())) return null;
+  let user;
+  try {
+    user = await prisma.user.findUnique({ where: { id: payload.uid }, include: userInclude });
+  } catch (error) {
+    if (!isConnectionError(error)) throw error;
+    markDatabaseDown(error);
+    return null;
+  }
   if (!user || !user.isActive) return null;
   return mapUser(user);
 });

@@ -41,7 +41,7 @@ export default async function ForgotPasswordPage() {
           <Phone className="h-4 w-4" /> {formatPhone(supportPhone)}
         </a>
         <a
-          href={whatsappLink(supportPhone, 'Hello, I need help resetting my Wolaita Marketplace password.')}
+          href={whatsappLink(supportPhone, 'Hello, I need help resetting my Zamana Market password.')}
           target="_blank"
           rel="noopener noreferrer"
           className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#25D366] text-sm font-semibold text-white hover:brightness-95"

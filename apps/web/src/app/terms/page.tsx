@@ -5,7 +5,7 @@ import { platformConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
-  description: 'The rules for buying, renting and selling on Wolaita Marketplace.',
+  description: 'The rules for buying, renting and selling on Zamana Market.',
 };
 
 const UPDATED = '4 November 2026';

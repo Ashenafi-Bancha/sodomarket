@@ -2,6 +2,8 @@ import 'server-only';
 import type { Prisma } from '@prisma/client';
 import { prisma } from './db';
 import { listingInclude, mapListing, mapUser, userInclude } from './mappers';
+import { isConnectionError, isDatabaseReady, markDatabaseDown } from './availability';
+import * as demo from '@/lib/demo';
 import {
   FILTER_FEATURES,
   FUEL_TYPES,
@@ -143,7 +145,7 @@ function buildOrder(sort: SortOption = 'newest'): Prisma.ListingOrderByWithRelat
   }
 }
 
-export async function searchListings(params: ListingSearchParams): Promise<ListingSearchResult> {
+async function searchListingsLive(params: ListingSearchParams): Promise<ListingSearchResult> {
   const pageSize = params.pageSize ?? DEFAULT_PAGE_SIZE;
   const where = buildWhere(params);
   const total = await prisma.listing.count({ where });
@@ -159,7 +161,7 @@ export async function searchListings(params: ListingSearchParams): Promise<Listi
   return { items: rows.map(mapListing), total, page, pageCount };
 }
 
-export async function getFeaturedListings(limit = 6): Promise<ListingItem[]> {
+async function getFeaturedListingsLive(limit = 6): Promise<ListingItem[]> {
   const featured = await prisma.listing.findMany({
     where: { status: 'PUBLISHED', isFeatured: true },
     include: listingInclude,
@@ -169,7 +171,7 @@ export async function getFeaturedListings(limit = 6): Promise<ListingItem[]> {
   return featured.map(mapListing);
 }
 
-export async function getRecentListings(limit = 8, assetType?: AssetType): Promise<ListingItem[]> {
+async function getRecentListingsLive(limit = 8, assetType?: AssetType): Promise<ListingItem[]> {
   const rows = await prisma.listing.findMany({
     where: { status: 'PUBLISHED', ...(assetType ? { asset: { assetType } } : {}) },
     include: listingInclude,
@@ -179,8 +181,7 @@ export async function getRecentListings(limit = 8, assetType?: AssetType): Promi
   return rows.map(mapListing);
 }
 
-/** Returns a listing in any status; callers decide who may see unpublished ones. */
-export async function getListingBySlug(slug: string): Promise<ListingItem | null> {
+async function getListingBySlugLive(slug: string): Promise<ListingItem | null> {
   const row = await prisma.listing.findUnique({ where: { slug }, include: listingInclude });
   return row ? mapListing(row) : null;
 }
@@ -190,11 +191,11 @@ export async function getListingById(id: string): Promise<ListingItem | null> {
   return row ? mapListing(row) : null;
 }
 
-export async function recordView(listingId: string) {
+async function recordViewLive(listingId: string) {
   await prisma.listing.update({ where: { id: listingId }, data: { viewCount: { increment: 1 } } }).catch(() => {});
 }
 
-export async function getSimilarListings(listing: ListingItem, limit = 4): Promise<ListingItem[]> {
+async function getSimilarListingsLive(listing: ListingItem, limit = 4): Promise<ListingItem[]> {
   const category = listing.propertyDetails?.propertyType ?? listing.vehicleDetails?.vehicleType;
   const base: Prisma.ListingWhereInput = {
     status: 'PUBLISHED',
@@ -217,7 +218,7 @@ export async function getSimilarListings(listing: ListingItem, limit = 4): Promi
   return [...close, ...more].map(mapListing);
 }
 
-export async function getMarketStats(): Promise<MarketStats> {
+async function getMarketStatsLive(): Promise<MarketStats> {
   const published = { listings: { some: { status: 'PUBLISHED' as const } } };
   const propertyCount = await prisma.listing.count({ where: { status: 'PUBLISHED', asset: { assetType: 'REAL_ESTATE' } } });
   const vehicleCount = await prisma.listing.count({ where: { status: 'PUBLISHED', asset: { assetType: 'VEHICLE' } } });
@@ -240,7 +241,7 @@ export async function getMarketStats(): Promise<MarketStats> {
   };
 }
 
-export async function getFavoriteIds(userId: string | undefined): Promise<string[]> {
+async function getFavoriteIdsLive(userId: string | undefined): Promise<string[]> {
   if (!userId) return [];
   const rows = await prisma.favorite.findMany({ where: { userId }, select: { listingId: true } });
   return rows.map((r) => r.listingId);
@@ -254,7 +255,7 @@ export interface BrokerProfile {
   specialties: AssetType[];
 }
 
-export async function getBrokers(): Promise<BrokerProfile[]> {
+async function getBrokersLive(): Promise<BrokerProfile[]> {
   const rows = await prisma.user.findMany({
     where: { isActive: true, role: { in: ['BROKER', 'AGENCY_ADMIN'] } },
     include: {
@@ -287,8 +288,7 @@ export interface SellerProfile {
   completedCount: number;
 }
 
-/** Public profile of a seller with their live ads (null if unknown or suspended). */
-export async function getSellerProfile(id: string): Promise<SellerProfile | null> {
+async function getSellerProfileLive(id: string): Promise<SellerProfile | null> {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const row = await prisma.user.findFirst({
     where: { id, isActive: true },
@@ -330,3 +330,42 @@ export async function uniqueSlug(title: string): Promise<string> {
   }
   return `${base}-${Date.now().toString(36)}`;
 }
+
+// ─── Public API: live data, or the sample catalogue while the database isn't ready ───
+
+async function withPreview<T>(live: () => Promise<T>, preview: () => T): Promise<T> {
+  if (!(await isDatabaseReady())) return preview();
+  try {
+    return await live();
+  } catch (error) {
+    if (!isConnectionError(error)) throw error;
+    markDatabaseDown(error);
+    return preview();
+  }
+}
+
+export const searchListings = (params: ListingSearchParams) =>
+  withPreview(() => searchListingsLive(params), () => demo.demoSearch(params, DEFAULT_PAGE_SIZE));
+
+export const getFeaturedListings = (limit = 6) =>
+  withPreview(() => getFeaturedListingsLive(limit), () => demo.demoFeatured(limit));
+
+export const getRecentListings = (limit = 8, assetType?: AssetType) =>
+  withPreview(() => getRecentListingsLive(limit, assetType), () => demo.demoRecent(limit, assetType));
+
+/** Returns a listing in any status; callers decide who may see unpublished ones. */
+export const getListingBySlug = (slug: string) => withPreview(() => getListingBySlugLive(slug), () => demo.demoBySlug(slug));
+
+export const recordView = (listingId: string) => withPreview(() => recordViewLive(listingId), () => undefined);
+
+export const getSimilarListings = (listing: ListingItem, limit = 4) =>
+  withPreview(() => getSimilarListingsLive(listing, limit), () => demo.demoSimilar(listing, limit));
+
+export const getMarketStats = () => withPreview(() => getMarketStatsLive(), () => demo.demoStats());
+
+export const getFavoriteIds = (userId: string | undefined) => withPreview(() => getFavoriteIdsLive(userId), () => [] as string[]);
+
+export const getBrokers = () => withPreview(() => getBrokersLive(), () => demo.demoBrokers());
+
+/** Public profile of a seller with their live ads (null if unknown or suspended). */
+export const getSellerProfile = (id: string) => withPreview(() => getSellerProfileLive(id), () => demo.demoSeller(id));

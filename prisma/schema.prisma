@@ -1,4 +1,4 @@
-// Prisma schema for Wolaita Marketplace (Sodo Market Hub)
+// Prisma schema for Zamana Market (Wolaita Sodo)
 
 generator client {
   provider = "prisma-client-js"

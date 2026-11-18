@@ -18,17 +18,17 @@ export interface PlatformConfig {
 }
 
 export const platformConfig: PlatformConfig = {
-  brandName: process.env.NEXT_PUBLIC_PLATFORM_NAME || 'Wolaita Marketplace',
-  subTitle: 'Sodo Market Hub',
+  brandName: process.env.NEXT_PUBLIC_PLATFORM_NAME || 'Zamana Market',
+  subTitle: 'Wolaita Sodo',
   tagline: process.env.NEXT_PUBLIC_PLATFORM_TAGLINE || 'Discover, Advertise, and Connect for Properties & Vehicles in Wolaita',
   defaultLocale: (process.env.NEXT_PUBLIC_DEFAULT_LOCALE as 'wal' | 'am' | 'en') || 'wal',
   defaultCurrency: 'ETB',
   primaryLocation: 'Wolaita Sodo, Ethiopia',
   supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || '+251 90 000 0000',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@wolaitamarketplace.et',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@zamanamarket.et',
   socials: {
-    telegram: 'https://t.me/wolaitamarketplace',
-    facebook: 'https://facebook.com/wolaitamarketplace',
+    telegram: 'https://t.me/zamanamarket',
+    facebook: 'https://facebook.com/zamanamarket',
   },
   commissionGuidelines: {
     realEstateStandardPercent: 2.0,

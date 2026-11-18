@@ -9,7 +9,7 @@ import { formatNumber } from '@/lib/formatters';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Wolaita Marketplace is the digital marketplace for property and vehicles in Wolaita Sodo.',
+  description: 'Zamana Market is the digital marketplace for property and vehicles in Wolaita Sodo.',
 };
 
 export default async function AboutPage() {
@@ -23,7 +23,7 @@ export default async function AboutPage() {
             were unclear and it was hard to know who to trust.
           </p>
           <p>
-            Wolaita Marketplace brings it all into one place. Every listing is reviewed by our local team before it is published, sellers declare
+            Zamana Market brings it all into one place. Every listing is reviewed by our local team before it is published, sellers declare
             their right to sell, and brokers can be verified — so buyers can search with confidence and sellers reach serious people.
           </p>
           <p>The platform works in Wolaytta, Amharic and English, and is designed to be fast on mobile phones and slow connections.</p>

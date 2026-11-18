@@ -47,8 +47,19 @@ export function fmt(template: string, values: Record<string, string | number>) {
   return template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 }
 
-export const availableLocales: { code: Locale; label: string; nativeLabel: string }[] = [
-  { code: 'wal', label: 'Wolaytta', nativeLabel: 'Wolayttatto' },
-  { code: 'am', label: 'Amharic', nativeLabel: 'አማርኛ' },
-  { code: 'en', label: 'English', nativeLabel: 'English' },
+/**
+ * Languages in the selector. `enabled: false` shows the language as "coming soon" and
+ * keeps everyone on an enabled one. To open Amharic or English, set `enabled: true`.
+ */
+export const availableLocales: { code: Locale; label: string; nativeLabel: string; enabled: boolean }[] = [
+  { code: 'wal', label: 'Wolaytta', nativeLabel: 'Wolayttatto', enabled: true },
+  { code: 'am', label: 'Amharic', nativeLabel: 'አማርኛ', enabled: false },
+  { code: 'en', label: 'English', nativeLabel: 'English', enabled: false },
 ];
+
+export function isEnabledLocale(value: unknown): value is Locale {
+  return availableLocales.some((l) => l.code === value && l.enabled);
+}
+
+/** The language to use when the visitor's choice (or the configured default) isn't open yet. */
+export const FALLBACK_LOCALE: Locale = availableLocales.find((l) => l.enabled)?.code ?? 'en';

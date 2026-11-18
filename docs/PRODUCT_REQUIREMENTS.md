@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 
 ## Product Name
-**Wolaita Marketplace** (Configurable brand: Sodo Market Hub)
+**Zamana Market** (Wolaita Sodo)
 
 ## Geographic Focus
 - Initial Town: **Wolaita Sodo, Ethiopia**

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = seller.agencyName ?? seller.user.businessName ?? seller.user.fullName;
   return {
     title: `${name} — Ads in Wolaita Sodo`,
-    description: seller.user.bio ?? `${seller.listings.length} live ads from ${name} on Wolaita Marketplace.`,
+    description: seller.user.bio ?? `${seller.listings.length} live ads from ${name} on Zamana Market.`,
   };
 }
 
@@ -28,7 +28,7 @@ export default async function SellerPage({ params }: Props) {
   if (!seller) notFound();
   const savedIds = await getFavoriteIds(viewer?.id);
   const { user } = seller;
-  const waText = `Hello ${user.fullName}, I found your ads on Wolaita Marketplace.`;
+  const waText = `Hello ${user.fullName}, I found your ads on Zamana Market.`;
 
   return (
     <div className="container-page py-10 sm:py-14">

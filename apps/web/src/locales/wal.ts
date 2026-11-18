@@ -2,9 +2,9 @@ export const wal = {
   locale: 'wal',
   localeName: 'Wolayttatto',
   brand: {
-    name: 'Wolaytta Marketteta',
+    name: 'Zamana Market',
     slogan: 'Wolaytta Soddon Keetta, Saʼaanne Kaamiya Amanettida Giyaa',
-    subTitle: 'Soddo Giya Qanxxiya',
+    subTitle: 'Wolaytta Soddo',
   },
   nav: {
     properties: 'Keettaanne Saʼaa',
@@ -176,6 +176,6 @@ export const wal = {
     quickLinks: 'Ela Ogeta',
     safetyNotice: 'Amanettettaanne Naaguwaa',
     safetyText: 'Wolaytta Marketteti shammataassinne bayzeytaassi gayttiyo soho. Waraqata heeraa oosanchatuura loytta beʼite.',
-    copyright: '© 2026 Wolaytta Marketteta (Sodo Market Hub). Ubba maati naagettidaagaa.',
+    copyright: '© 2026 Zamana Market. Ubba maati naagettidaagaa.',
   },
 };

@@ -1,4 +1,4 @@
-# Architecture: Wolaita Marketplace
+# Architecture: Zamana Market
 
 ## Overview
 

@@ -8,14 +8,14 @@ export function LogoMark({ className }: { className?: string }) {
     <svg viewBox="0 0 40 40" className={cn('h-10 w-10', className)} aria-hidden>
       <defs>
         <linearGradient id="wm-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#157c4f" />
-          <stop offset="1" stopColor="#062419" />
+          <stop offset="0" stopColor="#2557eb" />
+          <stop offset="1" stopColor="#0c1a47" />
         </linearGradient>
       </defs>
       <rect width="40" height="40" rx="12" fill="url(#wm-g)" />
       <circle cx="27.5" cy="12.5" r="3.6" fill="#e9aa2b" />
       <path d="M8 29.5 L20 15.5 L32 29.5" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M15.5 29.5 v-5.5 h9 v5.5" fill="none" stroke="#b0e7c7" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M15.5 29.5 v-5.5 h9 v5.5" fill="none" stroke="#bfd5fe" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

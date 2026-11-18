@@ -8,6 +8,8 @@ import { MobileTabBar } from '@/components/layout/MobileTabBar';
 import { platformConfig } from '@/lib/config';
 import { getLocale } from '@/lib/i18n-server';
 import { getCurrentUser } from '@/lib/server/session';
+import { isDatabaseReady } from '@/lib/server/availability';
+import { PreviewBanner } from '@/components/preview/Preview';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -42,7 +44,7 @@ export const metadata: Metadata = {
     'house for rent Sodo',
     'cars for sale Wolaita',
     'Ethiopia property',
-    'Sodo Market Hub',
+    'Zamana Market',
   ],
   applicationName: platformConfig.brandName,
   openGraph: {
@@ -58,11 +60,11 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#10412e',
+  themeColor: '#0c1a47',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [locale, user] = await Promise.all([getLocale(), getCurrentUser()]);
+  const [locale, user, dbReady] = await Promise.all([getLocale(), getCurrentUser(), isDatabaseReady()]);
 
   return (
     <html lang={locale} className={`${jakarta.variable} ${ethiopic.variable} h-full scroll-smooth antialiased`}>
@@ -75,6 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             Skip to content
           </a>
           <Navbar />
+          {!dbReady && <PreviewBanner />}
           <main id="main" className="flex-1">
             {children}
           </main>

@@ -13,10 +13,10 @@ import { FormAlert, Input, Label } from '@/components/ui/Input';
 
 const DEMO_ACCOUNTS = [
   { label: 'Buyer', email: 'buyer.tariku@gmail.com' },
-  { label: 'Owner', email: 'seller.bekele@wolaitamarketplace.et' },
-  { label: 'Broker', email: 'broker.alemu@wolaitamarketplace.et' },
-  { label: 'Car dealer', email: 'dealer.marta@wolaitamarketplace.et' },
-  { label: 'Admin', email: 'admin@wolaitamarketplace.et' },
+  { label: 'Owner', email: 'seller.bekele@zamanamarket.et' },
+  { label: 'Broker', email: 'broker.alemu@zamanamarket.et' },
+  { label: 'Car dealer', email: 'dealer.marta@zamanamarket.et' },
+  { label: 'Admin', email: 'admin@zamanamarket.et' },
 ];
 const DEMO_PASSWORD = 'DemoPass123!';
 

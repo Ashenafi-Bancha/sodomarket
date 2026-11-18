@@ -5,7 +5,7 @@ import { platformConfig } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'What personal information Wolaita Marketplace collects and how it is used.',
+  description: 'What personal information Zamana Market collects and how it is used.',
 };
 
 const UPDATED = '4 November 2026';

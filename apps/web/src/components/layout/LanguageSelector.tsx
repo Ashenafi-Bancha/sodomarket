@@ -7,7 +7,7 @@ import { availableLocales } from '@/locales';
 import { cn } from '@/lib/cn';
 
 export function LanguageSelector({ variant = 'compact' }: { variant?: 'compact' | 'list' }) {
-  const { locale, setLocale } = useTranslation();
+  const { locale, setLocale, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -25,13 +25,16 @@ export function LanguageSelector({ variant = 'compact' }: { variant?: 'compact' 
         {availableLocales.map((l) => (
           <button
             key={l.code}
-            onClick={() => setLocale(l.code)}
+            onClick={() => l.enabled && setLocale(l.code)}
+            disabled={!l.enabled}
             className={cn(
               'rounded-xl border px-3 py-2.5 text-sm font-semibold transition-colors',
-              locale === l.code ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-ink-200 text-ink-700 hover:bg-ink-50'
+              locale === l.code ? 'border-brand-600 bg-brand-50 text-brand-800' : 'border-ink-200 text-ink-700 hover:bg-ink-50',
+              !l.enabled && 'cursor-not-allowed border-dashed text-ink-400 hover:bg-transparent'
             )}
           >
             {l.nativeLabel}
+            {!l.enabled && <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-wide">{t.preview.comingSoonTitle}</span>}
           </button>
         ))}
       </div>
@@ -54,20 +57,23 @@ export function LanguageSelector({ variant = 'compact' }: { variant?: 'compact' 
       {open && (
         <div
           role="listbox"
-          className="absolute right-0 z-50 mt-2 w-48 animate-scale-in overflow-hidden rounded-2xl bg-white p-1.5 shadow-lift ring-1 ring-ink-100"
+          className="absolute right-0 z-50 mt-2 w-64 animate-scale-in overflow-hidden rounded-2xl bg-white p-1.5 shadow-lift ring-1 ring-ink-100"
         >
           {availableLocales.map((l) => (
             <button
               key={l.code}
               role="option"
               aria-selected={locale === l.code}
+              aria-disabled={!l.enabled}
+              disabled={!l.enabled}
               onClick={() => {
                 setLocale(l.code);
                 setOpen(false);
               }}
               className={cn(
                 'flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition-colors',
-                locale === l.code ? 'bg-brand-50 font-semibold text-brand-800' : 'text-ink-700 hover:bg-ink-50'
+                locale === l.code ? 'bg-brand-50 font-semibold text-brand-800' : 'text-ink-700 hover:bg-ink-50',
+                !l.enabled && 'cursor-not-allowed text-ink-400 hover:bg-transparent'
               )}
             >
               <span>
@@ -75,6 +81,11 @@ export function LanguageSelector({ variant = 'compact' }: { variant?: 'compact' 
                 <span className="ml-2 text-xs text-ink-400">{l.label}</span>
               </span>
               {locale === l.code && <Check className="h-4 w-4 text-brand-600" />}
+              {!l.enabled && (
+                <span className="whitespace-nowrap rounded-full bg-gold-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gold-700 ring-1 ring-gold-200">
+                  {t.preview.comingSoonTitle}
+                </span>
+              )}
             </button>
           ))}
         </div>

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { prisma } from '@/lib/server/db';
+import { isDatabaseReady } from '@/lib/server/availability';
 
 // Built on request so the build never needs the database.
 export const dynamic = 'force-dynamic';
@@ -11,6 +12,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'daily' as const,
     priority: path === '' ? 1 : 0.7,
   }));
+  // Preview mode: list only the fixed pages, not the sample listings.
+  if (!(await isDatabaseReady())) return staticPages;
   const listings = await prisma.listing
     .findMany({ where: { status: 'PUBLISHED' }, select: { slug: true, updatedAt: true, asset: { select: { assetType: true } } } })
     .catch(() => []);
